@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>zayd90000 - Aviator Pro</title>
+    <title>zayd90000 - Aviator Hub</title>
     <style>
         :root {
             --bg-black: #000000;
@@ -13,12 +13,13 @@
             --cashout-orange: #f6a61b;
             --text-gray: #9ea0a3;
             --gold-fun: #c89134;
+            --history-purple: #913ef8;
         }
 
         body {
             background-color: var(--bg-black);
             color: white;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Roboto', Arial, sans-serif;
             margin: 0;
             display: flex;
             flex-direction: column;
@@ -26,320 +27,277 @@
             overflow: hidden;
         }
 
-        /* --- Header --- */
-        .header {
+        /* Header */
+        .top-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px;
+            padding: 8px 12px;
             background: #141516;
-            border-bottom: 1px solid #222;
         }
         .logo { font-weight: 900; font-style: italic; font-size: 1.1rem; }
         .logo span { color: var(--bet-green); }
+        .balance-box { display: flex; align-items: center; gap: 8px; }
         .balance { color: #62ca5d; font-weight: bold; background: #000; padding: 4px 12px; border-radius: 20px; border: 1px solid #333; }
 
-        /* --- Game Stage (The Arena) --- */
-        .stage {
+        /* Multiplier History */
+        .history-bar {
+            display: flex;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #000;
+            overflow-x: auto;
+            white-space: nowrap;
+            border-bottom: 1px solid #222;
+        }
+        .hist-item { background: #1b1c1d; border-radius: 10px; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; color: var(--history-purple); }
+
+        /* The Flight Arena */
+        .game-stage {
             flex: 1;
             position: relative;
             background: #000;
             margin: 5px 10px;
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #222;
             overflow: hidden;
         }
-        .fun-tag { background: var(--gold-fun); color: black; text-align: center; font-size: 0.7rem; font-weight: 900; padding: 3px; text-transform: uppercase; letter-spacing: 1px; }
+        .fun-mode-tag { background: var(--gold-fun); color: black; text-align: center; font-size: 0.65rem; font-weight: 900; padding: 2px 0; text-transform: uppercase; }
+        #multiplier-display { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 4.5rem; font-weight: 900; z-index: 10; }
         
-        #mult-text { 
-            position: absolute; 
-            top: 40%; 
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            font-size: 4.8rem; 
-            font-weight: 900; 
-            z-index: 10; 
-            transition: color 0.2s;
-        }
-        
-        /* The Red Flight Path */
-        .curve-path-svg {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        #path-visual {
-            fill: none;
-            stroke: var(--aviator-red);
-            stroke-width: 4;
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            stroke-linecap: round;
-        }
+        .flight-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; }
+        #path-line { fill: none; stroke: var(--aviator-red); stroke-width: 4; stroke-dasharray: 1000; stroke-dashoffset: 1000; stroke-linecap: round; }
+        #plane-img { position: absolute; width: 50px; bottom: 0; left: 0; z-index: 15; filter: drop-shadow(0 0 10px red); }
 
-        #plane-icon {
-            position: absolute;
-            width: 50px;
-            bottom: 0;
-            left: 0;
-            z-index: 15;
-            filter: drop-shadow(0 0 10px red);
-            transition: transform 0.05s linear;
-        }
-
-        /* --- Betting Panels --- */
-        .betting-section {
+        /* Double Betting Panels */
+        .betting-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             padding: 10px;
             background: #141516;
-            border-radius: 20px 20px 0 0;
         }
+        .bet-card { background: var(--panel-bg); border-radius: 15px; padding: 12px; border: 1px solid #333; }
+        .panel-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 8px; font-size: 0.7rem; color: var(--text-gray); font-weight: bold; }
+        .panel-tabs .active { color: white; border-bottom: 2px solid var(--bet-green); }
 
-        .bet-card {
-            background: var(--panel-bg);
-            border-radius: 20px;
-            padding: 15px;
-            border: 1px solid #333;
-            margin-bottom: 10px;
-        }
+        .bet-row { display: flex; gap: 10px; align-items: center; }
+        .input-block { flex: 1; }
+        .stepper { display: flex; justify-content: space-between; align-items: center; background: #000; border-radius: 20px; padding: 2px 10px; border: 1px solid #444; margin-bottom: 5px; }
+        .stepper input { background: transparent; border: none; color: white; width: 50px; text-align: center; font-weight: bold; font-size: 1rem; }
+        .stepper button { background: none; border: none; color: #777; font-size: 1.2rem; cursor: pointer; }
 
-        .tabs { display: flex; justify-content: center; gap: 20px; margin-bottom: 12px; font-size: 0.8rem; font-weight: bold; color: var(--text-gray); text-transform: uppercase; }
-        .tabs .active { color: white; border-bottom: 2px solid var(--bet-green); }
+        .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .quick-grid button { background: #2c2d2e; border: none; color: var(--text-gray); font-size: 0.6rem; padding: 5px; border-radius: 10px; font-weight: bold; }
 
-        .bet-controls { display: flex; gap: 12px; align-items: center; }
-        
-        .input-group { flex: 1; }
-        .stepper { display: flex; justify-content: space-between; align-items: center; background: #000; border-radius: 25px; padding: 5px 12px; margin-bottom: 8px; border: 1px solid #444; }
-        .stepper input { background: transparent; border: none; color: white; width: 60px; text-align: center; font-weight: 900; font-size: 1.1rem; }
-        .stepper button { background: none; border: none; color: #777; font-size: 1.5rem; cursor: pointer; }
-
-        .quick-bet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .quick-bet-grid button { background: #2c2d2e; border: none; color: var(--text-gray); font-size: 0.75rem; padding: 6px; border-radius: 12px; font-weight: bold; }
-
-        /* The Dynamic Button */
-        .main-btn {
-            flex: 1.3;
-            height: 85px;
-            border-radius: 18px;
+        .action-btn {
+            flex: 1.2;
+            height: 75px;
+            border-radius: 15px;
             border: none;
             color: white;
             font-weight: 900;
-            font-size: 1.5rem;
-            cursor: pointer;
+            font-size: 1.3rem;
             background: var(--bet-green);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
         }
-        .main-btn span { font-size: 0.9rem; opacity: 0.9; margin-top: 5px; }
-        .main-btn.cashout { background: var(--cashout-orange); color: black; }
-        .main-btn.waiting { background: #444; color: #888; cursor: not-allowed; }
+        .action-btn span { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
+        .action-btn.cashout { background: var(--cashout-orange); color: black; }
+        .action-btn.waiting { background: #444; color: #888; cursor: not-allowed; }
 
-        /* --- Live Bot Stats --- */
-        .stats-panel {
-            flex: 0.7;
-            background: #0c0d0e;
-            padding: 10px 15px;
-            overflow-y: auto;
-            border-top: 1px solid #222;
-        }
-        .stat-header { display: flex; justify-content: space-between; color: #555; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
-        .bot-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.85rem; }
-        .win-green { color: var(--bet-green); font-weight: bold; }
+        /* Bottom Stats */
+        .live-stats { flex: 0.8; background: #0c0d0e; padding: 10px; overflow-y: auto; border-top: 1px solid #333; }
+        .stat-header { display: flex; justify-content: space-between; color: #555; font-size: 0.65rem; font-weight: bold; margin-bottom: 8px; }
+        .bot-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; }
+        .avatar { width: 20px; height: 20px; border-radius: 50%; background: #333; display: inline-block; margin-right: 5px; vertical-align: middle; }
+        .win-amt { color: var(--bet-green); font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header">
+<div class="top-nav">
     <div class="logo">zayd<span>90000</span></div>
-    <div class="balance" id="wallet">100.00 USD</div>
+    <div class="balance-box">
+        <div class="balance" id="main-wallet">100.00 USD</div>
+        <div style="font-size:1.2rem;">☰</div>
+    </div>
 </div>
 
-<div class="stage">
-    <div class="fun-tag">Fun Mode</div>
-    <div id="mult-text">1.00x</div>
-    
-    <svg class="curve-path-svg" viewBox="0 0 500 300">
-        <path id="path-visual" d="M 10 290 Q 150 290 480 20" />
-    </svg>
-
-    <img src="https://img.icons8.com/color/96/airplane.png" id="plane-icon" alt="plane">
+<div class="history-bar" id="history-list">
+    <div class="hist-item">1.55x</div>
+    <div class="hist-item" style="color:#c017b3">12.20x</div>
+    <div class="hist-item">2.10x</div>
+    <div class="hist-item" style="color:#c017b3">8.44x</div>
+    <div class="hist-item">1.02x</div>
 </div>
 
-<div class="betting-section">
+<div class="game-stage">
+    <div class="fun-mode-tag">Fun Mode</div>
+    <div id="multiplier-display">1.00x</div>
+    <svg class="flight-svg" viewBox="0 0 500 300"><path id="path-line" d="M 10 290 Q 150 290 480 20" /></svg>
+    <img src="https://img.icons8.com/color/96/airplane.png" id="plane-img" alt="plane">
+</div>
+
+<div class="betting-area">
     <div class="bet-card">
-        <div class="tabs"><span class="active">Bet</span><span>Auto</span></div>
-        <div class="bet-controls">
-            <div class="input-group">
+        <div class="panel-tabs"><span class="active">Bet</span><span>Auto</span></div>
+        <div class="bet-row">
+            <div class="input-block">
                 <div class="stepper">
-                    <button onclick="changeAmt(-1)">−</button>
-                    <input type="number" id="bet-amt" value="1.00" step="0.1">
-                    <button onclick="changeAmt(1)">+</button>
+                    <button onclick="adj(1,-1)">−</button>
+                    <input type="number" id="amt1" value="1.00">
+                    <button onclick="adj(1,1)">+</button>
                 </div>
-                <div class="quick-bet-grid">
-                    <button onclick="setAmt(10)">10</button>
-                    <button onclick="setAmt(20)">20</button>
-                    <button onclick="setAmt(50)">50</button>
-                    <button onclick="setAmt(100)">100</button>
+                <div class="quick-grid">
+                    <button onclick="set(1,10)">10</button>
+                    <button onclick="set(1,20)">20</button>
+                    <button onclick="set(1,50)">50</button>
+                    <button onclick="set(1,100)">100</button>
                 </div>
             </div>
-            <button class="main-btn" id="action-btn" onclick="handleMainAction()">
-                BET <span id="btn-subtext">1.00 USD</span>
-            </button>
+            <button class="action-btn" id="btn1" onclick="handle(1)">BET <span id="label1">1.00 USD</span></button>
+        </div>
+    </div>
+
+    <div class="bet-card">
+        <div class="panel-tabs"><span class="active">Bet</span><span>Auto</span></div>
+        <div class="bet-row">
+            <div class="input-block">
+                <div class="stepper">
+                    <button onclick="adj(2,-1)">−</button>
+                    <input type="number" id="amt2" value="1.00">
+                    <button onclick="adj(2,1)">+</button>
+                </div>
+                <div class="quick-grid">
+                    <button onclick="set(2,10)">10</button>
+                    <button onclick="set(2,20)">20</button>
+                    <button onclick="set(2,50)">50</button>
+                    <button onclick="set(2,100)">100</button>
+                </div>
+            </div>
+            <button class="action-btn" id="btn2" onclick="handle(2)">BET <span id="label2">1.00 USD</span></button>
         </div>
     </div>
 </div>
 
-<div class="stats-panel">
-    <div class="stat-header"><span>Player</span><span>Bet</span><span>Win</span></div>
+<div class="live-stats">
+    <div class="stat-header"><span>ALL BETS</span><span>WIN USD</span></div>
     <div id="bot-list"></div>
 </div>
 
 <script>
-    // Constants & State
-    let balance = parseFloat(localStorage.getItem('z9_pro_bal')) || 100.00;
-    let multiplier = 1.00;
-    let gameState = "WAITING"; // WAITING, FLYING, CRASHED
-    let myBetActive = false;
-    let currentBots = [];
+    let bal = parseFloat(localStorage.getItem('z9_master_bal')) || 100.00;
+    let mult = 1.00;
+    let state = "WAITING";
+    let bets = { 1: false, 2: false };
+    let rounds = 0;
 
-    const names = ["d***2", "z***k", "Aryan", "m***1", "p***0", "x***x", "user_9"];
+    const botNames = ["d***2", "z***k", "Aryan", "m***1", "p***0", "x***x", "zayd_9"];
 
-    // Initialize
     function sync() {
-        document.getElementById('wallet').innerText = balance.toFixed(2) + " USD";
-        localStorage.setItem('z9_pro_bal', balance);
+        document.getElementById('main-wallet').innerText = bal.toFixed(2) + " USD";
+        localStorage.setItem('z9_master_bal', bal);
     }
 
-    function setAmt(v) { document.getElementById('bet-amt').value = v.toFixed(2); updateBtnLabel(); }
-    function changeAmt(v) { 
-        let e = document.getElementById('bet-amt');
-        e.value = Math.max(0.1, parseFloat(e.value) + v).toFixed(2);
-        updateBtnLabel();
-    }
-    function updateBtnLabel() { 
-        if(!myBetActive) document.getElementById('btn-subtext').innerText = document.getElementById('bet-amt').value + " USD"; 
-    }
+    function set(id, v) { document.getElementById('amt'+id).value = v.toFixed(2); refresh(id); }
+    function adj(id, v) { let e = document.getElementById('amt'+id); e.value = Math.max(0.1, parseFloat(e.value) + v).toFixed(2); refresh(id); }
+    function refresh(id) { if(!bets[id]) document.getElementById('label'+id).innerText = document.getElementById('amt'+id).value + " USD"; }
 
-    // Core Game Engine
-    function startRound() {
-        gameState = "WAITING";
-        document.getElementById('mult-text').innerText = "WAITING...";
-        document.getElementById('mult-text').style.color = "var(--gold-fun)";
-        document.getElementById('path-visual').style.strokeDashoffset = "1000";
-        document.getElementById('plane-icon').style.transform = "translate(10px, 290px)";
-        
-        // Randomize Bots
-        currentBots = names.map(n => ({
-            name: n,
-            bet: (Math.random() * 20 + 1).toFixed(2),
-            target: (Math.random() * 3.5 + 1.1).toFixed(2),
-            cashed: false
-        }));
-        renderBots();
+    function engine() {
+        rounds++;
+        state = "WAITING";
+        document.getElementById('multiplier-display').innerText = "WAITING...";
+        document.getElementById('multiplier-display').style.color = "var(--gold-fun)";
+        document.getElementById('path-line').style.strokeDashoffset = "1000";
+        document.getElementById('plane-img').style.transform = "translate(10px, 290px)";
+
+        // Prep Bots
+        let activeBots = botNames.map(n => ({ name: n, bet: (Math.random()*15+1).toFixed(2), target: (Math.random()*4+1.1).toFixed(2), won: false }));
+        renderBots(activeBots);
 
         setTimeout(() => {
-            // Takeoff
-            gameState = "FLYING";
-            multiplier = 1.00;
-            let crashPoint = (Math.random() < 0.15) ? 1.00 : (Math.random() * 5 + 1.1).toFixed(2);
-            document.getElementById('mult-text').style.color = "white";
+            state = "FLYING";
+            mult = 1.00;
+            
+            // THE CHEAT LOGIC
+            let crash;
+            if(rounds === 29) crash = 6.60;
+            else if(rounds === 30) { crash = 10.00; rounds = 0; }
+            else crash = (Math.random() < 0.12) ? 1.00 : (Math.random() * 5 + 1.1).toFixed(2);
 
-            if (myBetActive) {
-                let btn = document.getElementById('action-btn');
-                btn.classList.add('cashout');
-                btn.innerHTML = `CASH OUT <span id="btn-subtext">0.00 USD</span>`;
-            }
+            document.getElementById('multiplier-display').style.color = "white";
+            [1, 2].forEach(id => {
+                if(bets[id]) {
+                    let btn = document.getElementById('btn'+id);
+                    btn.classList.add('cashout');
+                    btn.innerHTML = `CASH OUT <span id="label${id}">0.00 USD</span>`;
+                }
+            });
 
             let flight = setInterval(() => {
-                if (multiplier >= crashPoint) {
+                if(mult >= crash) {
                     clearInterval(flight);
-                    gameState = "CRASHED";
-                    document.getElementById('mult-text').innerText = "FLEW AWAY!";
-                    document.getElementById('mult-text').style.color = "red";
-                    finishRound();
-                    setTimeout(startRound, 3000);
+                    state = "CRASHED";
+                    document.getElementById('multiplier-display').innerText = "FLEW AWAY!";
+                    document.getElementById('multiplier-display').style.color = "red";
+                    resetAll();
+                    setTimeout(engine, 3000);
                 } else {
-                    multiplier += 0.01;
-                    document.getElementById('mult-text').innerText = multiplier.toFixed(2) + "x";
+                    mult += 0.01;
+                    document.getElementById('multiplier-display').innerText = mult.toFixed(2) + "x";
+                    let p = (mult - 1) / (crash - 1);
+                    if (crash == 1.00) p = 0;
+                    document.getElementById('path-line').style.strokeDashoffset = 1000 - (p * 1000);
+                    document.getElementById('plane-img').style.transform = `translate(${10 + (p * 450)}px, ${290 - (p * 250)}px)`;
                     
-                    // Animate Path & Plane
-                    let prog = (multiplier - 1) / (crashPoint - 1);
-                    if (crashPoint == 1.00) prog = 0;
-                    document.getElementById('path-visual').style.strokeDashoffset = 1000 - (prog * 1000);
-                    
-                    // Simple Curve Math
-                    let x = 10 + (prog * 450);
-                    let y = 290 - (prog * 250);
-                    document.getElementById('plane-icon').style.transform = `translate(${x}px, ${y}px)`;
-
-                    // Update UI for active bet
-                    if (myBetActive) {
-                        let currentWin = parseFloat(document.getElementById('bet-amt').value) * multiplier;
-                        document.getElementById('btn-subtext').innerText = currentWin.toFixed(2) + " USD";
-                    }
-
-                    // Update Bots
-                    currentBots.forEach(b => {
-                        if (!b.cashed && multiplier >= b.target) {
-                            b.cashed = true;
-                            renderBots();
-                        }
+                    [1, 2].forEach(id => {
+                        if(bets[id]) document.getElementById('label'+id).innerText = (parseFloat(document.getElementById('amt'+id).value) * mult).toFixed(2) + " USD";
                     });
+
+                    activeBots.forEach(b => { if(!b.won && mult >= b.target) { b.won = true; renderBots(activeBots); } });
                 }
             }, 60);
         }, 5000);
     }
 
-    function handleMainAction() {
-        let btn = document.getElementById('action-btn');
-        let amt = parseFloat(document.getElementById('bet-amt').value);
-
-        if (gameState === "WAITING" && !myBetActive) {
-            if (balance >= amt) {
-                balance -= amt;
-                myBetActive = true;
-                btn.innerText = "WAITING...";
-                btn.classList.add('waiting');
-                sync();
-            }
-        } else if (gameState === "FLYING" && myBetActive) {
-            balance += (amt * multiplier);
-            myBetActive = false;
-            btn.classList.remove('cashout');
-            btn.innerHTML = `BET <span id="btn-subtext">${amt.toFixed(2)} USD</span>`;
-            sync();
+    function handle(id) {
+        let btn = document.getElementById('btn'+id);
+        let amt = parseFloat(document.getElementById('amt'+id).value);
+        if(state === "WAITING" && !bets[id] && bal >= amt) {
+            bal -= amt; bets[id] = true;
+            btn.innerText = "WAITING..."; btn.classList.add('waiting');
+        } else if(state === "FLYING" && bets[id]) {
+            bal += (amt * mult); bets[id] = false;
+            btn.classList.remove('cashout'); refresh(id);
         }
+        sync();
     }
 
-    function renderBots() {
-        document.getElementById('bot-list').innerHTML = currentBots.map(b => `
+    function renderBots(list) {
+        document.getElementById('bot-list').innerHTML = list.map(b => `
             <div class="bot-row">
-                <span>${b.name}</span>
+                <span><div class="avatar"></div>${b.name}</span>
                 <span>${b.bet}</span>
-                <span class="${b.cashed ? 'win-green' : ''}">${b.cashed ? (b.bet * b.target).toFixed(2) : '-'}</span>
+                <span class="${b.won?'win-amt':''}">${b.won ? (b.bet * b.target).toFixed(2) : '-'}</span>
             </div>
         `).join('');
     }
 
-    function finishRound() {
-        myBetActive = false;
-        let btn = document.getElementById('action-btn');
-        btn.classList.remove('cashout', 'waiting');
-        btn.innerHTML = `BET <span id="btn-subtext">${document.getElementById('bet-amt').value} USD</span>`;
+    function resetAll() {
+        [1, 2].forEach(id => {
+            bets[id] = false;
+            let btn = document.getElementById('btn'+id);
+            btn.classList.remove('cashout', 'waiting');
+            btn.innerHTML = `BET <span id="label${id}">${document.getElementById('amt'+id).value} USD</span>`;
+        });
         sync();
     }
 
-    // Daily Gift
-    if(localStorage.getItem('z9_last_gift') !== new Date().toDateString()) {
-        balance += 50;
-        localStorage.setItem('z9_last_gift', new Date().toDateString());
-    }
-
-    sync();
-    startRound();
+    sync(); engine();
 </script>
 </body>
 </html>
