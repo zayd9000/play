@@ -3,165 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Safa | Valentine 2026</title>
+    <title>Happy Valentine's Day</title>
     <style>
         :root {
-            --deep-red: #380202;
-            --neon-blue: #00f2ff;
-            --gold: #d4af37;
-            --paper: #fdfaf5;
-            --bright-red: #ff002b;
+            --deep-crimson: #3d0101;
+            --gold-glow: #d4af37;
+            --accent-red: #ff2e2e;
+            --soft-text: #fdfaf5;
         }
 
         body {
-            background-color: var(--deep-red);
-            margin: 0; padding: 0;
+            background-color: var(--deep-crimson);
+            color: var(--soft-text);
             font-family: 'Georgia', serif;
-            color: var(--paper);
-            overflow-x: hidden;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden; text-align: center;
         }
 
-        #heartCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            z-index: 0;
+        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
+
+        .wrapper { position: relative; z-index: 1; max-width: 450px; padding: 80px 20px; }
+
+        h1 {
+            font-size: 2.8rem;
+            color: var(--gold-glow);
+            font-style: italic;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            margin-bottom: 30px;
         }
 
-        .content {
-            position: relative;
-            z-index: 1;
-            max-width: 450px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            text-align: center;
+        /* Story Text */
+        .intro-text {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 50px;
+            font-weight: 300;
+            opacity: 0.9;
         }
 
-        /* Elegant Divider instead of Photos */
-        .divider {
-            font-size: 2.5rem;
+        .highlight { color: var(--gold-glow); font-weight: bold; border-bottom: 1px solid var(--gold-glow); }
+
+        /* Secret Music Button */
+        .music-player {
+            margin: 20px 0 40px 0;
+            padding: 10px 20px;
+            border: 1px solid var(--gold-glow);
+            border-radius: 30px;
+            display: inline-block;
+            cursor: pointer;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+        .music-player:hover { background: rgba(212, 175, 55, 0.1); }
+
+        /* The Heart Trigger */
+        .heart-trigger {
+            font-size: 4rem;
+            cursor: pointer;
             margin: 40px 0;
-            filter: drop-shadow(0 0 10px var(--gold));
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
         }
+        .heart-trigger:hover { transform: scale(1.2); filter: drop-shadow(0 0 15px var(--accent-red)); }
 
-        .poetry-box {
-            margin: 60px 0;
-            padding: 30px 15px;
+        /* The Poem Box */
+        #poem-reveal {
+            display: none;
             background: rgba(0, 0, 0, 0.4);
+            padding: 40px 20px;
             border-radius: 20px;
-            border: 1px solid var(--gold);
+            border: 1px solid var(--gold-glow);
+            margin-bottom: 60px;
+            animation: fadeIn 1.5s forwards;
         }
 
-        .arabic-poem {
-            font-size: 1.8rem;
-            color: var(--gold);
-            line-height: 1.8;
+        .arabic-poetry {
+            font-size: 1.7rem;
+            line-height: 2.3;
+            color: var(--gold-glow);
             direction: rtl;
+            font-family: 'Amiri', serif;
         }
 
-        .neon-container {
-            border: 2px solid var(--neon-blue);
-            padding: 30px 20px;
-            margin: 50px 0;
-            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px var(--neon-blue);
-            border-radius: 12px;
+        .english-sub {
+            margin-top: 30px;
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0.7;
+            line-height: 1.6;
         }
 
+        /* Final Gift */
         .gift-box {
-            width: 90px; height: 90px;
-            background: var(--bright-red);
-            margin: 25px auto;
+            width: 70px; height: 70px;
+            background: var(--accent-red);
+            margin: 40px auto;
             position: relative;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
+        .gift-box::after { content: ''; position: absolute; height: 10px; width: 100%; background: var(--gold-glow); top: 30px; left: 0; }
+        .gift-box::before { content: ''; position: absolute; width: 10px; height: 100%; background: var(--gold-glow); left: 30px; top: 0; }
 
-        .gift-box::before { content: ''; position: absolute; width: 18px; height: 100%; background: var(--gold); left: 36px; }
-        .gift-box::after { content: ''; position: absolute; height: 18px; width: 100%; background: var(--gold); top: 36px; left: 0; }
+        #final-msg { display: none; font-size: 2.2rem; color: var(--gold-glow); font-weight: bold; }
 
-        #surprise { display: none; font-size: 2rem; color: var(--gold); font-weight: bold; margin-top: 20px; animation: popIn 0.8s forwards; }
-
-        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-
-        .lang-nav { margin-top: 80px; display: flex; justify-content: center; gap: 25px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.3); }
-        .lang-btn { cursor: pointer; color: var(--gold); font-size: 0.85rem; opacity: 0.6; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<canvas id="heartCanvas"></canvas>
+<canvas id="bg-canvas"></canvas>
 
-<div class="content">
+<div class="wrapper">
     <header>
-        <h1 id="main-title">To Safa</h1>
-        <p style="opacity: 0.7; letter-spacing: 2px;">VALENTINE 2026</p>
+        <h1>Happy Valentine's Day</h1>
+        <div class="music-player" onclick="alert('Playing romantic ambience...')">
+            <span>♫</span> PLAY MUSIC
+        </div>
     </header>
 
-    <div class="divider">🌹</div>
-
-    <div class="poetry-box">
-        <p class="arabic-poem">أُحبُّكِ جِدّاً..<br>وأعرفُ أني أُسافرُ في بحرِ عينيكِ..<br>دُونَ يقينِ</p>
-        <p id="poem-translation" style="font-style: italic; font-size: 0.95rem; opacity: 0.8;">"I love you dearly... traveling the sea of your eyes."</p>
+    <div class="intro-text">
+        From the very first day I saw you, I fell in love with everything. <br>
+        First, it was your <span class="highlight">eyes</span>, <br>
+        then it was your <span class="highlight">smile</span>... <br><br>
+        And now, every beat of my heart belongs to you.
     </div>
 
-    <div class="divider">✨</div>
+    <div class="heart-trigger" id="main-heart" onclick="revealPoem()">❤️</div>
 
-    <div class="neon-container">
-        <div style="color: var(--neon-blue); font-weight: bold; letter-spacing: 4px;">LIMITED EDITION</div>
-        <p id="neon-msg" style="font-style: italic; margin-top: 20px;">"You gave me all the love I missed."</p>
+    <div id="poem-reveal">
+        <div class="arabic-poetry">
+            أُحبُّكِ جِدّاً..<br>
+            وأعرفُ أنَّ الطريقَ إلى المستحيلِ طويـلْ<br>
+            وأعرفُ أنَّكِ ستُ النساء <br>
+            وليسَ لديَّ بديـلْ<br>
+            وأعرفُ أنَّ زمانَ الحنيـنِ انتهى<br>
+            وماتَ الكلامُ الجميـلْ<br>
+            أُحبُّكِ جِدّاً..
+        </div>
+        <div class="english-sub">
+            "I love you dearly...<br>
+            And I know the road to the impossible is long.<br>
+            I know you are the lady of all women,<br>
+            and for me, there is no substitute.<br>
+            I love you... more than words can say."
+        </div>
     </div>
-
-    <div class="divider">💖</div>
 
     <div class="gift-section">
-        <p id="gift-hint">Click to unwrap your gift, Safa</p>
-        <div class="gift-box" id="box-element" onclick="openGift()"></div>
-        <div id="surprise">❤️ أحبكِ للأبد ❤️</div>
+        <p style="opacity: 0.5; font-size: 0.8rem;">Tap the gift, one last time</p>
+        <div class="gift-box" id="box" onclick="openGift()"></div>
+        <div id="final-msg">أحبكِ للأبد ❤️</div>
     </div>
-
-    <nav class="lang-nav">
-        <span class="lang-btn" onclick="translateTo('en')">ENGLISH</span>
-        <span class="lang-btn" onclick="translateTo('ku')">KURDISH</span>
-        <span class="lang-btn" onclick="translateTo('ar')">ARABIC</span>
-    </nav>
 </div>
 
 <script>
-    const strings = {
-        en: { title: "To Safa", poem: "I love you dearly... traveling the sea of your eyes.", neon: "You gave me all the love I missed.", hint: "Click to unwrap your gift, Safa", final: "❤️ I Love You Forever ❤️" },
-        ku: { title: "بۆ سەفا", poem: "زۆرم خۆشدەوێیت... لە دەریای چاوەکانتدا نوقم بووم.", neon: "تۆ هەموو ئەو خۆشەویستیەی پێت بەخشیم کە نەمبوو.", hint: "بۆ کردنەوەی دیارییەکە کلیک بکە", final: "❤️ تا هەتایە خۆشم دەوێیت ❤️" },
-        ar: { title: "إلى صفا", poem: "أُحبُّكِ جِدّاً.. وأعرفُ أني أُسافرُ في بحرِ عينيكِ.. دُونَ يقينِ", neon: "لقد أعطيتني كل الحب الذي افتقدته.", hint: "اضغطي لفتح هدية صفا", final: "❤️ أحبكِ للأبد ❤️" }
-    };
-
-    function translateTo(l) {
-        document.getElementById('main-title').innerText = strings[l].title;
-        document.getElementById('poem-translation').innerText = strings[l].poem;
-        document.getElementById('neon-msg').innerText = strings[l].neon;
-        document.getElementById('gift-hint').innerText = strings[l].hint;
-        document.getElementById('surprise').innerText = strings[l].final;
+    function revealPoem() {
+        document.getElementById('main-heart').style.display = 'none';
+        document.getElementById('poem-reveal').style.display = 'block';
     }
 
     function openGift() {
-        document.getElementById('box-element').style.display = "none";
-        document.getElementById('gift-hint').style.display = "none";
-        document.getElementById('surprise').style.display = "block";
+        document.getElementById('box').style.display = 'none';
+        document.getElementById('final-msg').style.display = 'block';
     }
 
-    // Heart Animation
-    const canvas = document.getElementById('heartCanvas');
+    // Interactive Floating Hearts
+    const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let hearts = [];
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.onresize = resize; resize();
+
     class Heart {
         constructor() { this.reset(); }
-        reset() { this.x = Math.random() * canvas.width; this.y = canvas.height + 20; this.size = Math.random() * 10 + 5; this.speed = Math.random() * 2 + 1; }
-        draw() { ctx.fillStyle = "rgba(212, 175, 55, 0.4)"; ctx.font = `${this.size}px serif`; ctx.fillText('❤️', this.x, this.y); }
-        update() { this.y -= this.speed; if (this.y < -20) this.reset(); }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 20;
+            this.size = Math.random() * 15 + 10;
+            this.speed = Math.random() * 2 + 1;
+            this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+            this.y -= this.speed;
+            if (this.y < -30) this.reset();
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255, 46, 46, ${this.opacity})`;
+            ctx.font = `${this.size}px serif`;
+            ctx.fillText('❤️', this.x, this.y);
+        }
     }
-    for(let i=0; i<30; i++) hearts.push(new Heart());
-    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); hearts.forEach(h => { h.update(); h.draw(); }); requestAnimationFrame(animate); }
-    animate();
+    for(let i=0; i<40; i++) hearts.push(new Heart());
+    function anim() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        hearts.forEach(h => { h.update(); h.draw(); });
+        requestAnimationFrame(anim);
+    }
+    anim();
 </script>
 </body>
 </html>
