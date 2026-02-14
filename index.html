@@ -26,6 +26,7 @@
             padding: 12px 20px; border-radius: 50px; font-weight: bold;
             cursor: pointer; font-size: 0.9rem; white-space: nowrap;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: transform 0.1s ease;
         }
 
         #no-btn, #handak-btn { transition: all 0.1s ease; z-index: 1001; }
@@ -65,7 +66,7 @@
 
     <div id="stage-2">
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
-        <img src="https://media2.giphy.com/media/PFo2HrqCjC0bm/giphy.gif?cid=9b38fe912si1ru7whyig9t7hxmtxdrz7veskea77mevwtgky&ep=v1_gifs_search&rid=giphy.gif&ct=g" class="gif-img">
+        <img src="https://media.giphy.com/media/PFo2HrqCjC0bm/giphy.gif" class="gif-img">
         <div class="btn-container">
             <button onclick="nextStage('zor')">Zor</button>
             <button onclick="nextStage('zor')">ZORRRR</button>
@@ -76,14 +77,14 @@
 
     <div id="stage-zor">
         <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
-        <img src="https://media.giphy.com/media/v1.Y2lkPTZjMDliOTU5NGRyZ3B6bmx3Z3R4bmV4bmV4bmV4bmV4bmV4bmV4bmV4bmV4bmV4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/KzM1lAfJjCWEDVv37y/giphy.gif" class="gif-img">
+        <img src="https://media.giphy.com/media/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img">
         <div class="btn-container">
             <button onclick="nextStage('final')">GALAK ZOR!</button>
         </div>
     </div>
 
     <div id="stage-final">
-        <img src="https://media4.giphy.com/media/IzXiddo2twMmdmU8Lv/giphy.gif?cid=9b38fe91f1rlrd3vplaw0t6lczfgv2wlq0fsx3rh3mnmp37c&ep=v1_gifs_related&rid=giphy.gif&ct=g" class="gif-img">
+        <img src="https://media.giphy.com/media/IzXiddo2twMmdmU8Lv/giphy.gif" class="gif-img">
         <div style="font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-top:15px;">AMNISH ATUM ZOR XOSH DAWY</div>
         <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
     </div>
@@ -94,10 +95,11 @@
 
     function unlockMusic() {
         document.getElementById('overlay').style.display = 'none';
-        music.play().catch(e => console.log("Music play blocked"));
+        music.play().catch(e => console.log("Music play blocked by browser policy. Interaction was successful but audio failed."));
     }
 
     function moveBtn(btn) {
+        // Generates random coordinates to make the button jump away
         const x = Math.random() * (window.innerWidth - btn.offsetWidth);
         const y = Math.random() * (window.innerHeight - btn.offsetHeight);
         btn.style.position = 'fixed';
@@ -111,6 +113,7 @@
         if(stageId === 'final') startHeavyHearts();
     }
 
+    // Background Animation (Hearts and Flowers)
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
