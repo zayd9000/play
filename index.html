@@ -53,14 +53,15 @@
         .kurdish-txt { font-size: 1.8rem; color: var(--gold); margin-bottom: 15px; }
         #percentage { font-size: 4rem; font-weight: bold; margin: 20px 0; transition: 0.3s; }
         .neon { color: var(--neon); text-shadow: 0 0 20px var(--neon); }
-        
         input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
 
-        /* STAGE 3: THE MESSAGE */
-        #final-stage { display: none; animation: fadeIn 2s forwards; }
-        .arabic-poetry { font-size: 1.7rem; color: var(--gold); direction: rtl; line-height: 2.2; }
+        /* STAGE 3: THE GRAND FINALE */
+        #final-stage { display: none; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .big-heart { font-size: 6rem; margin-bottom: 10px; filter: drop-shadow(0 0 20px #ff2e2e); }
+        .bouquet { font-size: 5rem; margin-bottom: 20px; }
+        .arabic-poetry { font-size: 1.5rem; color: var(--gold); direction: rtl; line-height: 2; }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -81,10 +82,12 @@
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
         <div id="percentage">0%</div>
         <input type="range" id="love-slider" min="0" max="1000" value="0" oninput="handleSlide(this.value)">
-        <p style="opacity: 0.5; margin-top: 15px;">Pull it to the right...</p>
+        <p style="opacity: 0.5; margin-top: 15px;">Keep pulling for a surprise...</p>
     </div>
 
     <div id="final-stage">
+        <div class="big-heart">❤️</div>
+        <div class="bouquet">💐🌹💐</div>
         <div class="arabic-poetry">
             أُحبُّكِ جِدّاً..<br>
             وأعرفُ أنَّ الطريقَ إلى المستحيلِ طويـلْ<br>
@@ -92,7 +95,7 @@
             وليسَ لديَّ بديـلْ<br>
             أُحبُّكِ جِدّاً..
         </div>
-        <p style="margin-top: 25px; font-weight: bold; color: var(--gold);">❤️ I Love You Forever ❤️</p>
+        <p style="margin-top: 15px; font-weight: bold; color: var(--gold); letter-spacing: 1px;">I Love You Forever</p>
     </div>
 </div>
 
@@ -107,13 +110,10 @@
         const noBtn = document.getElementById('no-btn');
         const yesBtn = document.getElementById('yes-btn');
         const pew = document.getElementById('pew');
-
         noBtn.style.transform = `scale(${noScale})`;
         yesBtn.style.transform = `scale(${yesScale})`;
-        
         pew.style.display = 'block';
         setTimeout(() => { pew.style.display = 'none'; }, 500);
-
         if (noScale <= 0.1) noBtn.style.display = 'none';
     }
 
@@ -125,7 +125,7 @@
     function handleSlide(val) {
         const pDisplay = document.getElementById('percentage');
         pDisplay.innerText = val + "%";
-        bloomLevel = val; // Control how many hearts/flowers appear
+        bloomLevel = val;
 
         if(val > 100) pDisplay.classList.add('neon');
         else pDisplay.classList.remove('neon');
@@ -138,11 +138,10 @@
         }
     }
 
-    // Animation System
+    // Animation Logic
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.onresize = resize; resize();
 
@@ -169,8 +168,7 @@
 
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // Number of items increases with percentage
-        let activeItems = Math.floor(bloomLevel / 10); 
+        let activeItems = Math.floor(bloomLevel / 8); 
         for(let i=0; i < activeItems; i++) {
             particles[i].update();
             particles[i].draw();
