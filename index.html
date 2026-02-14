@@ -8,148 +8,126 @@
         :root {
             --bg: #1a0101;
             --gold: #d4af37;
-            --white: #fff;
         }
 
         body {
             background-color: var(--bg);
-            color: var(--white);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0; padding: 0;
-            min-height: 100vh;
+            height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            overflow-x: hidden; text-align: center;
+            overflow: hidden; text-align: center;
         }
 
         #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1; }
-        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 450px; padding: 20px; }
-        .gif-img, .final-img { width: 100%; max-width: 280px; border-radius: 20px; margin: 20px 0; border: 3px solid var(--gold); }
+        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 400px; }
+        .gif-img, .final-img { width: 100%; max-width: 250px; border-radius: 20px; border: 2px solid var(--gold); margin: 15px 0; }
 
-        .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; min-height: 100px; }
+        .btn-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; min-height: 100px; }
         
         button {
             background: var(--gold); color: black; border: none;
             padding: 12px 25px; border-radius: 50px; font-weight: bold;
-            cursor: pointer; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-size: 1rem;
+            cursor: pointer; font-size: 1rem; position: relative;
         }
 
-        #no-btn { background: #444; color: white; }
+        #no-btn, .moving-target { position: absolute; transition: 0.1s ease; }
 
-        /* STAGES */
         #stage-2, #stage-zor, #stage-handak, #stage-final { display: none; }
-        .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
-        .final-txt { font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top: 15px; }
-        #pew { position: absolute; top: -30px; width: 100%; color: var(--gold); font-weight: bold; display: none; }
+        .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; }
         
-        /* Hidden Audio */
-        #video-container { position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none; }
+        /* Music Player UI */
+        #music-control {
+            position: fixed; top: 10px; right: 10px; z-index: 100;
+            background: rgba(212, 175, 55, 0.2); border: 1px solid var(--gold);
+            padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
 
-<div id="video-container">
-    <div id="player"></div>
+<div style="position:absolute; left:-9999px;">
+    <iframe id="sc-player" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" 
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1149955363&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+    </iframe>
 </div>
+
+<div id="music-control" onclick="toggleMusic()">🎵 Play Music</div>
 
 <div class="ui-wrapper">
     <div id="stage-1">
-        <h1 style="font-size: 2.2rem;">AMNT XOSH DAWY 🥹</h1>
-        <div class="btn-container" style="position: relative;">
-            <div id="pew">( pew )</div>
-            <button id="yes-btn" onclick="startExperience()">YES</button>
-            <button id="no-btn" onclick="shrinkNo()">NO</button>
+        <h1 style="font-size: 2rem;">AMNT XOSH DAWY 🥹</h1>
+        <div class="btn-container">
+            <button id="yes-btn" onclick="nextStage(2)">YES</button>
+            <button id="no-btn" onmouseover="flee(this)" onclick="flee(this)">NO</button>
         </div>
     </div>
 
     <div id="stage-2">
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
         <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img">
-        <div class="btn-container">
-            <button onclick="showZor()">Zor</button>
-            <button onclick="showZor()">ZORRRRRR</button>
-            <button onclick="showHandak()">Handak</button>
-            <button onclick="showZor()">GALAK ZORRRRRR</button>
+        <div class="btn-container" style="position:relative; height:150px;">
+            <button onclick="nextStage('zor')">Zor</button>
+            <button onclick="nextStage('zor')">ZORRRRRR</button>
+            <button class="moving-target" onmouseover="flee(this)" onclick="flee(this)">Handak</button>
+            <button onclick="nextStage('zor')">GALAK ZORRRRRR</button>
         </div>
     </div>
 
     <div id="stage-zor">
         <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
         <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img">
-        <br><button onclick="showFinal()" style="margin-top: 20px;">GALAK ZOR!</button>
+        <br><button onclick="nextStage('final')">GALAK ZOR!</button>
     </div>
 
     <div id="stage-handak">
         <div class="kurdish-txt">Handak?! 🤨</div>
         <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZnp4ejhib2JlaWV5MDN0b2IybzV0cm5uNHYxbnU0MDU3cjdpZ2p6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fFa05KbZowXiEIyRse/giphy.gif" class="gif-img">
-        <br><button onclick="showFinal()" style="margin-top: 20px;">GALAK ZOR!</button>
+        <br><button onclick="nextStage('final')">GALAK ZOR!</button>
     </div>
 
     <div id="stage-final">
-        <img src="image.png" class="final-img" onerror="this.style.display='none'">
-        <div class="final-txt">Atum zor xosh dawyyyyyyy</div>
-        <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
+        <img src="image.png" class="final-img" onerror="this.src='https://media.giphy.com/media/v1.Y2lkPTZjMDliOTU5bzIwaHoxeGZleXp6eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/L2quk2th1YfR4H9T0n/giphy.gif'">
+        <div class="kurdish-txt" style="font-size: 2.2rem; margin-top:15px;">Atum zor xosh dawyyyyyyy</div>
+        <div style="font-size: 3rem;">❤️💐❤️</div>
     </div>
 </div>
 
+<script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
-    // YouTube API Integration for Background Music
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    const widget = SC.Widget(document.getElementById('sc-player'));
+    let musicPlaying = false;
 
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '0', width: '0',
-            videoId: 'm_W_7B4pIEM', // The music from the TikTok link
-            playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': 'm_W_7B4pIEM' }
-        });
+    function toggleMusic() {
+        if(!musicPlaying) {
+            widget.play();
+            document.getElementById('music-control').innerText = "⏸ Pause Music";
+        } else {
+            widget.pause();
+            document.getElementById('music-control').innerText = "🎵 Play Music";
+        }
+        musicPlaying = !musicPlaying;
     }
 
-    let noScale = 1;
-    let yesScale = 1;
-
-    function shrinkNo() {
-        noScale -= 0.15;
-        yesScale += 0.25;
-        const noBtn = document.getElementById('no-btn');
-        const yesBtn = document.getElementById('yes-btn');
-        const pew = document.getElementById('pew');
-        noBtn.style.transform = `scale(${noScale})`;
-        yesBtn.style.transform = `scale(${yesScale})`;
-        pew.style.display = 'block';
-        setTimeout(() => { pew.style.display = 'none'; }, 500);
-        if (noScale <= 0.1) noBtn.style.display = 'none';
+    function flee(btn) {
+        const x = Math.random() * (window.innerWidth - 100);
+        const y = Math.random() * (window.innerHeight - 50);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
     }
 
-    function startExperience() {
-        if (player && player.playVideo) { player.playVideo(); }
-        document.getElementById('stage-1').style.display = 'none';
-        document.getElementById('stage-2').style.display = 'block';
+    function nextStage(s) {
+        if(s === 2 && !musicPlaying) toggleMusic();
+        document.querySelectorAll('.ui-wrapper > div').forEach(d => d.style.display = 'none');
+        document.getElementById('stage-' + s).style.display = 'block';
+        if(s === 'final') startHeavyHearts();
     }
 
-    function showZor() {
-        document.getElementById('stage-2').style.display = 'none';
-        document.getElementById('stage-zor').style.display = 'block';
-    }
-
-    function showHandak() {
-        document.getElementById('stage-2').style.display = 'none';
-        document.getElementById('stage-handak').style.display = 'block';
-    }
-
-    function showFinal() {
-        document.getElementById('stage-2').style.display = 'none';
-        document.getElementById('stage-zor').style.display = 'none';
-        document.getElementById('stage-handak').style.display = 'none';
-        document.getElementById('stage-final').style.display = 'block';
-        startHeavyHearts();
-    }
-
-    // Animation Code
+    // Floating Hearts Logic
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -170,7 +148,7 @@
     }
 
     for(let i=0; i<30; i++) particles.push(new Particle());
-    function startHeavyHearts() { for(let i=0; i<60; i++) particles.push(new Particle()); }
+    function startHeavyHearts() { for(let i=0; i<70; i++) particles.push(new Particle()); }
 
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
