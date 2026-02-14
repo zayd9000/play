@@ -15,18 +15,15 @@
 
         body {
             background-color: var(--deep-red);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Georgia', serif;
             color: var(--paper);
             overflow-x: hidden;
         }
 
-        /* Floating Hearts Canvas */
         #heartCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             pointer-events: none;
             z-index: 0;
         }
@@ -40,50 +37,19 @@
             text-align: center;
         }
 
-        header h1 {
-            font-size: 3.5rem;
-            font-style: italic;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        /* Elegant Divider instead of Photos */
+        .divider {
+            font-size: 2.5rem;
+            margin: 40px 0;
+            filter: drop-shadow(0 0 10px var(--gold));
         }
 
-        /* Polaroid Effect */
-        .polaroid {
-            background: white;
-            padding: 15px 15px 60px 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            margin: 50px 0;
-            transform: rotate(var(--r));
-            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .polaroid img { 
-            width: 100%; 
-            height: auto; 
-            filter: blur(8px); 
-            transition: 0.8s;
-            display: block;
-        }
-
-        .polaroid:hover { transform: rotate(0deg) scale(1.05); }
-        .polaroid:hover img { filter: blur(0); }
-
-        .caption {
-            color: #222;
-            font-family: 'Brush Script MT', cursive;
-            font-size: 1.6rem;
-            margin-top: 25px;
-        }
-
-        /* Poetry Section */
         .poetry-box {
             margin: 60px 0;
             padding: 30px 15px;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 20px;
             border: 1px solid var(--gold);
-            position: relative;
         }
 
         .arabic-poem {
@@ -91,88 +57,34 @@
             color: var(--gold);
             line-height: 1.8;
             direction: rtl;
-            margin-bottom: 20px;
         }
 
-        .poem-sub {
-            font-style: italic;
-            font-size: 0.95rem;
-            opacity: 0.8;
-            line-height: 1.5;
-        }
-
-        /* Neon Element */
         .neon-container {
             border: 2px solid var(--neon-blue);
             padding: 30px 20px;
             margin: 50px 0;
             box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px var(--neon-blue);
             border-radius: 12px;
-            background: rgba(0, 242, 255, 0.05);
         }
 
-        .neon-title {
-            color: var(--neon-blue);
-            font-weight: bold;
-            letter-spacing: 4px;
-            font-size: 1.3rem;
-            text-shadow: 0 0 10px var(--neon-blue);
-        }
-
-        /* Interactive Gift */
-        .gift-section { margin: 80px 0; }
-        
         .gift-box {
-            width: 90px;
-            height: 90px;
+            width: 90px; height: 90px;
             background: var(--bright-red);
             margin: 25px auto;
             position: relative;
             cursor: pointer;
-            transition: 0.5s;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
         }
-
-        .gift-box:hover { transform: scale(1.1); }
 
         .gift-box::before { content: ''; position: absolute; width: 18px; height: 100%; background: var(--gold); left: 36px; }
         .gift-box::after { content: ''; position: absolute; height: 18px; width: 100%; background: var(--gold); top: 36px; left: 0; }
 
-        #surprise {
-            display: none;
-            font-size: 2rem;
-            color: var(--gold);
-            font-weight: bold;
-            margin-top: 20px;
-            animation: popIn 0.8s forwards;
-        }
+        #surprise { display: none; font-size: 2rem; color: var(--gold); font-weight: bold; margin-top: 20px; animation: popIn 0.8s forwards; }
 
-        @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            80% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* Controls */
-        .lang-nav {
-            margin-top: 80px;
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            border-top: 1px solid rgba(212, 175, 55, 0.3);
-            padding-top: 20px;
-        }
-
-        .lang-btn {
-            cursor: pointer;
-            color: var(--gold);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            opacity: 0.6;
-            transition: 0.3s;
-        }
-
-        .lang-btn:hover { opacity: 1; text-decoration: underline; }
+        .lang-nav { margin-top: 80px; display: flex; justify-content: center; gap: 25px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.3); }
+        .lang-btn { cursor: pointer; color: var(--gold); font-size: 0.85rem; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -185,33 +97,21 @@
         <p style="opacity: 0.7; letter-spacing: 2px;">VALENTINE 2026</p>
     </header>
 
-    <div class="polaroid" style="--r: -3deg;">
-        <img src="YOUR_IMAGE_LINK_1" alt="Memory 1">
-        <div class="caption">"And I only have eyes for you"</div>
-    </div>
+    <div class="divider">🌹</div>
 
     <div class="poetry-box">
-        <p class="arabic-poem">
-            أُحبُّكِ جِدّاً..<br>
-            وأعرفُ أني أُسافرُ في بحرِ عينيكِ..<br>
-            دونَ يقينِ
-        </p>
-        <p id="poem-translation" class="poem-sub">
-            "I love you dearly... knowing I am traveling in the sea of your eyes without a shore."
-        </p>
+        <p class="arabic-poem">أُحبُّكِ جِدّاً..<br>وأعرفُ أني أُسافرُ في بحرِ عينيكِ..<br>دُونَ يقينِ</p>
+        <p id="poem-translation" style="font-style: italic; font-size: 0.95rem; opacity: 0.8;">"I love you dearly... traveling the sea of your eyes."</p>
     </div>
+
+    <div class="divider">✨</div>
 
     <div class="neon-container">
-        <div class="neon-title">LIMITED EDITION</div>
-        <p id="neon-msg" style="font-style: italic; margin-top: 20px; line-height: 1.6;">
-            "You gave me all the love I missed in this world."
-        </p>
+        <div style="color: var(--neon-blue); font-weight: bold; letter-spacing: 4px;">LIMITED EDITION</div>
+        <p id="neon-msg" style="font-style: italic; margin-top: 20px;">"You gave me all the love I missed."</p>
     </div>
 
-    <div class="polaroid" style="--r: 3deg;">
-        <img src="YOUR_IMAGE_LINK_2" alt="Memory 2">
-        <div class="caption">"Show me love..."</div>
-    </div>
+    <div class="divider">💖</div>
 
     <div class="gift-section">
         <p id="gift-hint">Click to unwrap your gift, Safa</p>
@@ -227,102 +127,41 @@
 </div>
 
 <script>
-    // 1. Language Data Logic
     const strings = {
-        en: {
-            title: "To Safa",
-            poem: "I love you dearly... knowing I am traveling in the sea of your eyes without a shore.",
-            neon: "You gave me all the love I missed in this world.",
-            hint: "Click to unwrap your gift, Safa",
-            final: "❤️ I Love You Forever ❤️"
-        },
-        ku: {
-            title: "بۆ سەفا",
-            poem: "زۆرم خۆشدەوێیت... دەزانم کە لە دەریای چاوەکانتدا بێ کەنار گەشت دەکەم.",
-            neon: "تۆ هەموو ئەو خۆشەویستیەی کە لەم جیهانەدا نەمبوو پێت بەخشیم.",
-            hint: "بۆ کردنەوەی دیارییەکە کلیک بکە",
-            final: "❤️ تا هەتایە خۆشم دەوێیت ❤️"
-        },
-        ar: {
-            title: "إلى صفا",
-            poem: "أُحبُّكِ جِدّاً.. وأعرفُ أني أُسافرُ في بحرِ عينيكِ.. دُونَ يقينِ",
-            neon: "لقد أعطيتني كل الحب الذي افتقدته في هذا العالم.",
-            hint: "اضغطي لفتح هدية صفا",
-            final: "❤️ أحبكِ للأبد ❤️"
-        }
+        en: { title: "To Safa", poem: "I love you dearly... traveling the sea of your eyes.", neon: "You gave me all the love I missed.", hint: "Click to unwrap your gift, Safa", final: "❤️ I Love You Forever ❤️" },
+        ku: { title: "بۆ سەفا", poem: "زۆرم خۆشدەوێیت... لە دەریای چاوەکانتدا نوقم بووم.", neon: "تۆ هەموو ئەو خۆشەویستیەی پێت بەخشیم کە نەمبوو.", hint: "بۆ کردنەوەی دیارییەکە کلیک بکە", final: "❤️ تا هەتایە خۆشم دەوێیت ❤️" },
+        ar: { title: "إلى صفا", poem: "أُحبُّكِ جِدّاً.. وأعرفُ أني أُسافرُ في بحرِ عينيكِ.. دُونَ يقينِ", neon: "لقد أعطيتني كل الحب الذي افتقدته.", hint: "اضغطي لفتح هدية صفا", final: "❤️ أحبكِ للأبد ❤️" }
     };
 
-    function translateTo(lang) {
-        document.getElementById('main-title').innerText = strings[lang].title;
-        document.getElementById('poem-translation').innerText = strings[lang].poem;
-        document.getElementById('neon-msg').innerText = strings[lang].neon;
-        document.getElementById('gift-hint').innerText = strings[lang].hint;
-        document.getElementById('surprise').innerText = strings[lang].final;
+    function translateTo(l) {
+        document.getElementById('main-title').innerText = strings[l].title;
+        document.getElementById('poem-translation').innerText = strings[l].poem;
+        document.getElementById('neon-msg').innerText = strings[l].neon;
+        document.getElementById('gift-hint').innerText = strings[l].hint;
+        document.getElementById('surprise').innerText = strings[l].final;
     }
 
-    // 2. Gift Interaction
     function openGift() {
-        const box = document.getElementById('box-element');
-        const hint = document.getElementById('gift-hint');
-        const surprise = document.getElementById('surprise');
-        
-        box.style.transform = "translateY(-100px) rotate(45deg) scale(0)";
-        box.style.opacity = "0";
-        hint.style.opacity = "0";
-        
-        setTimeout(() => {
-            box.style.display = "none";
-            hint.style.display = "none";
-            surprise.style.display = "block";
-        }, 500);
+        document.getElementById('box-element').style.display = "none";
+        document.getElementById('gift-hint').style.display = "none";
+        document.getElementById('surprise').style.display = "block";
     }
 
-    // 3. Heart Background Animation
+    // Heart Animation
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
     let hearts = [];
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.onresize = resize; resize();
     class Heart {
-        constructor() {
-            this.reset();
-        }
-        reset() {
-            this.x = Math.random() * canvas.width;
-            this.y = canvas.height + 20;
-            this.size = Math.random() * 12 + 6;
-            this.speed = Math.random() * 1.5 + 0.5;
-            this.opacity = Math.random() * 0.4 + 0.1;
-        }
-        draw() {
-            ctx.fillStyle = `rgba(212, 175, 55, ${this.opacity})`;
-            ctx.font = `${this.size}px serif`;
-            ctx.fillText('❤️', this.x, this.y);
-        }
-        update() {
-            this.y -= this.speed;
-            if (this.y < -20) this.reset();
-        }
+        constructor() { this.reset(); }
+        reset() { this.x = Math.random() * canvas.width; this.y = canvas.height + 20; this.size = Math.random() * 10 + 5; this.speed = Math.random() * 2 + 1; }
+        draw() { ctx.fillStyle = "rgba(212, 175, 55, 0.4)"; ctx.font = `${this.size}px serif`; ctx.fillText('❤️', this.x, this.y); }
+        update() { this.y -= this.speed; if (this.y < -20) this.reset(); }
     }
-
-    for(let i=0; i<40; i++) hearts.push(new Heart());
-
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        hearts.forEach(h => {
-            h.update();
-            h.draw();
-        });
-        requestAnimationFrame(animate);
-    }
+    for(let i=0; i<30; i++) hearts.push(new Heart());
+    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); hearts.forEach(h => { h.update(); h.draw(); }); requestAnimationFrame(animate); }
     animate();
 </script>
-
 </body>
 </html>
