@@ -3,205 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Valentine's Day</title>
+    <title>Valentine's Challenge</title>
     <style>
         :root {
-            --deep-crimson: #3d0101;
-            --gold-glow: #d4af37;
-            --accent-red: #ff2e2e;
-            --soft-text: #fdfaf5;
+            --bg: #2b0202;
+            --gold: #d4af37;
+            --neon: #00f2ff;
         }
 
         body {
-            background-color: var(--deep-crimson);
-            color: var(--soft-text);
+            background-color: var(--bg);
+            color: white;
             font-family: 'Georgia', serif;
             margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: hidden; text-align: center;
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; text-align: center;
         }
 
-        #bg-canvas { position: fixed; top: 0; left: 0; z-index: 0; pointer-events: none; }
-
-        .wrapper { position: relative; z-index: 1; max-width: 450px; padding: 80px 20px; }
-
-        h1 {
-            font-size: 2.8rem;
-            color: var(--gold-glow);
-            font-style: italic;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            margin-bottom: 30px;
+        #canvas {
+            position: fixed; top: 0; left: 0;
+            pointer-events: none; z-index: 1;
         }
 
-        /* Story Text */
-        .intro-text {
-            font-size: 1.15rem;
-            line-height: 1.9;
-            margin-bottom: 50px;
-            font-weight: 300;
-            opacity: 0.9;
+        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 400px; }
+
+        /* STAGE 1: THE CHOICE */
+        .btn-container { 
+            display: flex; justify-content: center; align-items: center; 
+            gap: 20px; margin-top: 30px; height: 100px; 
+        }
+        #yes-btn {
+            background: var(--gold); color: black; border: none;
+            padding: 15px 30px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; transition: 0.2s; font-size: 1.1rem;
+        }
+        #no-btn {
+            background: #555; color: white; border: none;
+            padding: 10px 20px; border-radius: 50px;
+            cursor: pointer; transition: 0.2s;
+        }
+        #pew { 
+            position: absolute; top: -30px; width: 100%; 
+            color: var(--gold); font-weight: bold; display: none; 
         }
 
-        .highlight { color: var(--gold-glow); font-weight: bold; border-bottom: 1px solid var(--gold-glow); }
+        /* STAGE 2: THE KURDISH SLIDER */
+        #slider-stage { display: none; }
+        .kurdish-txt { font-size: 1.8rem; color: var(--gold); margin-bottom: 15px; }
+        #percentage { font-size: 4rem; font-weight: bold; margin: 20px 0; transition: 0.3s; }
+        .neon { color: var(--neon); text-shadow: 0 0 20px var(--neon); }
+        
+        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
 
-        /* Secret Music Button */
-        .music-player {
-            margin: 20px 0 40px 0;
-            padding: 10px 20px;
-            border: 1px solid var(--gold-glow);
-            border-radius: 30px;
-            display: inline-block;
-            cursor: pointer;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            transition: 0.3s;
-        }
-        .music-player:hover { background: rgba(212, 175, 55, 0.1); }
+        /* STAGE 3: THE MESSAGE */
+        #final-stage { display: none; animation: fadeIn 2s forwards; }
+        .arabic-poetry { font-size: 1.7rem; color: var(--gold); direction: rtl; line-height: 2.2; }
 
-        /* The Heart Trigger */
-        .heart-trigger {
-            font-size: 4rem;
-            cursor: pointer;
-            margin: 40px 0;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: inline-block;
-        }
-        .heart-trigger:hover { transform: scale(1.2); filter: drop-shadow(0 0 15px var(--accent-red)); }
-
-        /* The Poem Box */
-        #poem-reveal {
-            display: none;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 40px 20px;
-            border-radius: 20px;
-            border: 1px solid var(--gold-glow);
-            margin-bottom: 60px;
-            animation: fadeIn 1.5s forwards;
-        }
-
-        .arabic-poetry {
-            font-size: 1.7rem;
-            line-height: 2.3;
-            color: var(--gold-glow);
-            direction: rtl;
-            font-family: 'Amiri', serif;
-        }
-
-        .english-sub {
-            margin-top: 30px;
-            font-size: 1rem;
-            font-style: italic;
-            opacity: 0.7;
-            line-height: 1.6;
-        }
-
-        /* Final Gift */
-        .gift-box {
-            width: 70px; height: 70px;
-            background: var(--accent-red);
-            margin: 40px auto;
-            position: relative;
-            cursor: pointer;
-        }
-        .gift-box::after { content: ''; position: absolute; height: 10px; width: 100%; background: var(--gold-glow); top: 30px; left: 0; }
-        .gift-box::before { content: ''; position: absolute; width: 10px; height: 100%; background: var(--gold-glow); left: 30px; top: 0; }
-
-        #final-msg { display: none; font-size: 2.2rem; color: var(--gold-glow); font-weight: bold; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<canvas id="canvas"></canvas>
 
-<div class="wrapper">
-    <header>
-        <h1>Happy Valentine's Day</h1>
-        <div class="music-player" onclick="alert('Playing romantic ambience...')">
-            <span>♫</span> PLAY MUSIC
+<div class="ui-wrapper">
+    <div id="q-stage">
+        <h1 style="font-size: 2.5rem;">Do you love me?</h1>
+        <div class="btn-container" style="position: relative;">
+            <div id="pew">( pew )</div>
+            <button id="yes-btn" onclick="openSlider()">YES</button>
+            <button id="no-btn" onclick="shrinkNo()">NO</button>
         </div>
-    </header>
-
-    <div class="intro-text">
-        From the very first day I saw you, I fell in love with everything. <br>
-        First, it was your <span class="highlight">eyes</span>, <br>
-        then it was your <span class="highlight">smile</span>... <br><br>
-        And now, every beat of my heart belongs to you.
     </div>
 
-    <div class="heart-trigger" id="main-heart" onclick="revealPoem()">❤️</div>
+    <div id="slider-stage">
+        <div class="kurdish-txt">Chand amnt xosh dawy?</div>
+        <div id="percentage">0%</div>
+        <input type="range" id="love-slider" min="0" max="1000" value="0" oninput="handleSlide(this.value)">
+        <p style="opacity: 0.5; margin-top: 15px;">Pull it to the right...</p>
+    </div>
 
-    <div id="poem-reveal">
+    <div id="final-stage">
         <div class="arabic-poetry">
             أُحبُّكِ جِدّاً..<br>
             وأعرفُ أنَّ الطريقَ إلى المستحيلِ طويـلْ<br>
             وأعرفُ أنَّكِ ستُ النساء <br>
             وليسَ لديَّ بديـلْ<br>
-            وأعرفُ أنَّ زمانَ الحنيـنِ انتهى<br>
-            وماتَ الكلامُ الجميـلْ<br>
             أُحبُّكِ جِدّاً..
         </div>
-        <div class="english-sub">
-            "I love you dearly...<br>
-            And I know the road to the impossible is long.<br>
-            I know you are the lady of all women,<br>
-            and for me, there is no substitute.<br>
-            I love you... more than words can say."
-        </div>
-    </div>
-
-    <div class="gift-section">
-        <p style="opacity: 0.5; font-size: 0.8rem;">Tap the gift, one last time</p>
-        <div class="gift-box" id="box" onclick="openGift()"></div>
-        <div id="final-msg">أحبكِ للأبد ❤️</div>
+        <p style="margin-top: 25px; font-weight: bold; color: var(--gold);">❤️ I Love You Forever ❤️</p>
     </div>
 </div>
 
 <script>
-    function revealPoem() {
-        document.getElementById('main-heart').style.display = 'none';
-        document.getElementById('poem-reveal').style.display = 'block';
+    let noScale = 1;
+    let yesScale = 1;
+    let bloomLevel = 0;
+
+    function shrinkNo() {
+        noScale -= 0.15;
+        yesScale += 0.25;
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const pew = document.getElementById('pew');
+
+        noBtn.style.transform = `scale(${noScale})`;
+        yesBtn.style.transform = `scale(${yesScale})`;
+        
+        pew.style.display = 'block';
+        setTimeout(() => { pew.style.display = 'none'; }, 500);
+
+        if (noScale <= 0.1) noBtn.style.display = 'none';
     }
 
-    function openGift() {
-        document.getElementById('box').style.display = 'none';
-        document.getElementById('final-msg').style.display = 'block';
+    function openSlider() {
+        document.getElementById('q-stage').style.display = 'none';
+        document.getElementById('slider-stage').style.display = 'block';
     }
 
-    // Interactive Floating Hearts
-    const canvas = document.getElementById('bg-canvas');
+    function handleSlide(val) {
+        const pDisplay = document.getElementById('percentage');
+        pDisplay.innerText = val + "%";
+        bloomLevel = val; // Control how many hearts/flowers appear
+
+        if(val > 100) pDisplay.classList.add('neon');
+        else pDisplay.classList.remove('neon');
+
+        if(val >= 1000) {
+            setTimeout(() => {
+                document.getElementById('slider-stage').style.display = 'none';
+                document.getElementById('final-stage').style.display = 'block';
+            }, 500);
+        }
+    }
+
+    // Animation System
+    const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    let hearts = [];
+    let particles = [];
+
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.onresize = resize; resize();
 
-    class Heart {
+    class Item {
         constructor() { this.reset(); }
         reset() {
             this.x = Math.random() * canvas.width;
-            this.y = canvas.height + 20;
-            this.size = Math.random() * 15 + 10;
-            this.speed = Math.random() * 2 + 1;
-            this.opacity = Math.random() * 0.5 + 0.1;
+            this.y = canvas.height + 50;
+            this.type = Math.random() > 0.5 ? '❤️' : '🌸';
+            this.size = Math.random() * 20 + 10;
+            this.speed = Math.random() * 3 + 1;
         }
         update() {
             this.y -= this.speed;
-            if (this.y < -30) this.reset();
+            if (this.y < -50) this.reset();
         }
         draw() {
-            ctx.fillStyle = `rgba(255, 46, 46, ${this.opacity})`;
             ctx.font = `${this.size}px serif`;
-            ctx.fillText('❤️', this.x, this.y);
+            ctx.fillText(this.type, this.x, this.y);
         }
     }
-    for(let i=0; i<40; i++) hearts.push(new Heart());
-    function anim() {
+
+    for(let i=0; i<100; i++) particles.push(new Item());
+
+    function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        hearts.forEach(h => { h.update(); h.draw(); });
-        requestAnimationFrame(anim);
+        // Number of items increases with percentage
+        let activeItems = Math.floor(bloomLevel / 10); 
+        for(let i=0; i < activeItems; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        requestAnimationFrame(render);
     }
-    anim();
+    render();
 </script>
 </body>
 </html>
