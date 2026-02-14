@@ -18,38 +18,27 @@
             margin: 0; padding: 0;
             min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            overflow-x: hidden; text-align: center;
+            overflow: hidden; text-align: center;
         }
 
         #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1; }
-
         .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 450px; padding: 20px; }
+        .gif-img, .final-img { width: 100%; max-width: 280px; border-radius: 20px; margin: 20px 0; border: 3px solid var(--gold); }
 
-        .gif-img, .final-img { 
-            width: 100%; 
-            max-width: 280px; 
-            border-radius: 20px; 
-            margin: 20px 0; 
-            border: 3px solid var(--gold); 
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); 
-        }
-
-        .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
+        .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; min-height: 120px; }
         
         button {
             background: var(--gold); color: black; border: none;
             padding: 12px 25px; border-radius: 50px; font-weight: bold;
-            cursor: pointer; transition: 0.2s; font-size: 1rem;
+            cursor: pointer; transition: transform 0.2s ease; font-size: 1rem;
         }
 
-        #no-btn { background: #444; color: white; position: relative; }
+        #no-btn, .move-btn { transition: all 0.2s ease; }
 
         /* STAGES */
         #stage-2, #stage-zor, #stage-handak, #stage-final { display: none; }
-
         .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
-        .final-txt { font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top: 15px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        
+        .final-txt { font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top: 15px; }
         #pew { position: absolute; top: -30px; width: 100%; color: var(--gold); font-weight: bold; display: none; }
     </style>
 </head>
@@ -60,21 +49,20 @@
 <div class="ui-wrapper">
     <div id="stage-1">
         <h1 style="font-size: 2.2rem;">AMNT XOSH DAWY 🥹</h1>
-        <div class="btn-container" style="position: relative;">
+        <div class="btn-container">
             <div id="pew">( pew )</div>
-            <button id="yes-btn" onclick="showStage2()">YES</button>
-            <button id="no-btn" onclick="shrinkNo()">NO</button>
+            <button id="yes-btn" onclick="startExperience()">YES</button>
+            <button id="no-btn" onmouseover="moveBtn(this)" onclick="shrinkNo()">NO</button>
         </div>
     </div>
 
     <div id="stage-2">
-        <button onclick="window.open('https://vt.tiktok.com/ZSmMV7pS4/', '_blank')" style="background: none; border: 1px solid var(--gold); color: var(--gold); margin-bottom: 15px; font-size: 0.8rem;">🎵 Click to Start Music</button>
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
         <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img">
         <div class="btn-container">
             <button onclick="showZor()">Zor</button>
             <button onclick="showZor()">ZORRRRRR</button>
-            <button onclick="showHandak()">HANAK</button>
+            <button id="handak-btn" class="move-btn" onmouseover="moveBtn(this)" onclick="showHandak()">Handak</button>
             <button onclick="showZor()">GALAK ZORRRRRR</button>
         </div>
     </div>
@@ -82,15 +70,13 @@
     <div id="stage-zor">
         <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
         <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img">
-        <br>
-        <button onclick="showFinal()" style="margin-top: 20px;">I mean... GALAK ZOR!</button>
+        <br><button onclick="showFinal()" style="margin-top: 20px;">I mean... GALAK ZOR!</button>
     </div>
 
     <div id="stage-handak">
         <div class="kurdish-txt">Handak?! 🤨</div>
         <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZnp4ejhib2JlaWV5MDN0b2IybzV0cm5uNHYxbnU0MDU3cjdpZ2p6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fFa05KbZowXiEIyRse/giphy.gif" class="gif-img">
-        <br>
-        <button onclick="showFinal()" style="margin-top: 20px;">Chawa handak?! GALAK ZOR!</button>
+        <br><button onclick="showFinal()" style="margin-top: 20px;">Chawa handak?! GALAK ZOR!</button>
     </div>
 
     <div id="stage-final">
@@ -103,6 +89,14 @@
 <script>
     let noScale = 1;
     let yesScale = 1;
+
+    function moveBtn(btn) {
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
 
     function shrinkNo() {
         noScale -= 0.15;
@@ -117,7 +111,8 @@
         if (noScale <= 0.1) noBtn.style.display = 'none';
     }
 
-    function showStage2() {
+    function startExperience() {
+        window.open('https://vt.tiktok.com/ZSmMV7pS4/', '_blank');
         document.getElementById('stage-1').style.display = 'none';
         document.getElementById('stage-2').style.display = 'block';
     }
@@ -140,6 +135,7 @@
         startHeavyHearts();
     }
 
+    // Canvas Background
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
