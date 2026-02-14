@@ -5,129 +5,117 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Safa ❤️</title>
     <style>
-        :root {
-            --bg: #1a0101;
-            --gold: #d4af37;
-        }
-
+        :root { --bg: #1a0101; --gold: #d4af37; }
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0; padding: 0;
-            height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            background-color: var(--bg); color: white;
+            font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0;
+            height: 100vh; display: flex; justify-content: center; align-items: center;
             overflow: hidden; text-align: center;
         }
-
         #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1; }
-        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 400px; }
-        .gif-img, .final-img { width: 100%; max-width: 250px; border-radius: 20px; border: 2px solid var(--gold); margin: 15px 0; }
-
-        .btn-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; min-height: 100px; }
+        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 450px; padding: 20px; }
         
+        /* Layout to prevent overlapping */
+        .btn-container { 
+            display: flex; justify-content: center; align-items: center; 
+            gap: 20px; margin-top: 30px; position: relative; width: 100%;
+            min-height: 60px;
+        }
+
         button {
             background: var(--gold); color: black; border: none;
             padding: 12px 25px; border-radius: 50px; font-weight: bold;
-            cursor: pointer; font-size: 1rem; position: relative;
+            cursor: pointer; font-size: 1rem; white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
 
-        #no-btn, .moving-target { position: absolute; transition: 0.1s ease; }
+        #no-btn, #handak-btn { transition: all 0.1s ease; }
 
+        /* Start Screen Overlay */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 100; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .gif-img { width: 100%; max-width: 250px; border-radius: 20px; border: 2px solid var(--gold); margin: 15px 0; }
         #stage-2, #stage-zor, #stage-handak, #stage-final { display: none; }
         .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; }
-        
-        /* Music Player UI */
-        #music-control {
-            position: fixed; top: 10px; right: 10px; z-index: 100;
-            background: rgba(212, 175, 55, 0.2); border: 1px solid var(--gold);
-            padding: 5px 10px; border-radius: 10px; font-size: 0.7rem; cursor: pointer;
-        }
     </style>
 </head>
 <body>
 
 <canvas id="canvas"></canvas>
 
-<div style="position:absolute; left:-9999px;">
-    <iframe id="sc-player" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" 
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1149955363&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
-    </iframe>
-</div>
+<audio id="bg-music" loop>
+    <source src="https://www.dropbox.com/scl/fi/do7njslfvq5l6xqf0b2ho/v24044gl0000d4tkunnog65ppbq0o2g0.mp4?rlkey=bkwkv5z88jyl5sbu4anypis3s&st=16g37775&raw=1" type="audio/mp4">
+</audio>
 
-<div id="music-control" onclick="toggleMusic()">🎵 Play Music</div>
+<div id="overlay">
+    <h1 style="color: var(--gold); font-size: 2.5rem;">For You ❤️</h1>
+    <button onclick="unlockMusic()">Open Surprise 🎁</button>
+</div>
 
 <div class="ui-wrapper">
     <div id="stage-1">
-        <h1 style="font-size: 2rem;">AMNT XOSH DAWY 🥹</h1>
+        <h1 style="font-size: 2.2rem;">AMNT XOSH DAWY 🥹</h1>
         <div class="btn-container">
-            <button id="yes-btn" onclick="nextStage(2)">YES</button>
-            <button id="no-btn" onmouseover="flee(this)" onclick="flee(this)">NO</button>
+            <button id="yes-btn" onclick="nextStage('2')">YES</button>
+            <button id="no-btn" onmouseover="moveBtn(this)" onclick="moveBtn(this)">NO</button>
         </div>
     </div>
 
     <div id="stage-2">
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
         <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img">
-        <div class="btn-container" style="position:relative; height:150px;">
+        <div class="btn-container">
             <button onclick="nextStage('zor')">Zor</button>
-            <button onclick="nextStage('zor')">ZORRRRRR</button>
-            <button class="moving-target" onmouseover="flee(this)" onclick="flee(this)">Handak</button>
-            <button onclick="nextStage('zor')">GALAK ZORRRRRR</button>
+            <button onclick="nextStage('zor')">ZORRRR</button>
+            <button id="handak-btn" onmouseover="moveBtn(this)" onclick="moveBtn(this)">Handak</button>
+            <button onclick="nextStage('zor')">GALAK ZOR</button>
         </div>
     </div>
 
     <div id="stage-zor">
         <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
         <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img">
-        <br><button onclick="nextStage('final')">GALAK ZOR!</button>
-    </div>
-
-    <div id="stage-handak">
-        <div class="kurdish-txt">Handak?! 🤨</div>
-        <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZnp4ejhib2JlaWV5MDN0b2IybzV0cm5uNHYxbnU0MDU3cjdpZ2p6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fFa05KbZowXiEIyRse/giphy.gif" class="gif-img">
-        <br><button onclick="nextStage('final')">GALAK ZOR!</button>
+        <div class="btn-container">
+            <button onclick="nextStage('final')">GALAK ZOR!</button>
+        </div>
     </div>
 
     <div id="stage-final">
-        <img src="image.png" class="final-img" onerror="this.src='https://media.giphy.com/media/v1.Y2lkPTZjMDliOTU5bzIwaHoxeGZleXp6eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/L2quk2th1YfR4H9T0n/giphy.gif'">
-        <div class="kurdish-txt" style="font-size: 2.2rem; margin-top:15px;">Atum zor xosh dawyyyyyyy</div>
-        <div style="font-size: 3rem;">❤️💐❤️</div>
+        <img src="image.png" class="gif-img" onerror="this.src='https://media.giphy.com/media/v1.Y2lkPTZjMDliOTU5bzIwaHoxeGZleXp6eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/L2quk2th1YfR4H9T0n/giphy.gif'">
+        <div style="font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top:15px;">Atum zor xosh dawyyyyyyy</div>
+        <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
     </div>
 </div>
 
-<script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
-    const widget = SC.Widget(document.getElementById('sc-player'));
-    let musicPlaying = false;
+    const music = document.getElementById('bg-music');
 
-    function toggleMusic() {
-        if(!musicPlaying) {
-            widget.play();
-            document.getElementById('music-control').innerText = "⏸ Pause Music";
-        } else {
-            widget.pause();
-            document.getElementById('music-control').innerText = "🎵 Play Music";
-        }
-        musicPlaying = !musicPlaying;
+    function unlockMusic() {
+        document.getElementById('overlay').style.display = 'none';
+        music.play().catch(e => console.log("Music play blocked by browser"));
     }
 
-    function flee(btn) {
-        const x = Math.random() * (window.innerWidth - 100);
-        const y = Math.random() * (window.innerHeight - 50);
+    function moveBtn(btn) {
+        // Teleports button to a random spot to avoid overlap/clicking
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
         btn.style.position = 'fixed';
         btn.style.left = x + 'px';
         btn.style.top = y + 'px';
+        btn.style.zIndex = "1000";
     }
 
-    function nextStage(s) {
-        if(s === 2 && !musicPlaying) toggleMusic();
-        document.querySelectorAll('.ui-wrapper > div').forEach(d => d.style.display = 'none');
-        document.getElementById('stage-' + s).style.display = 'block';
-        if(s === 'final') startHeavyHearts();
+    function nextStage(stageId) {
+        document.querySelectorAll('.ui-wrapper > div').forEach(div => div.style.display = 'none');
+        document.getElementById('stage-' + stageId).style.display = 'block';
+        if(stageId === 'final') startHeavyHearts();
     }
 
-    // Floating Hearts Logic
+    // Floating Hearts/Flowers Animation
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -141,14 +129,14 @@
             this.y = canvas.height + 50;
             this.char = Math.random() > 0.5 ? '❤️' : '🌸';
             this.size = Math.random() * 20 + 10;
-            this.speed = Math.random() * 3 + 1;
+            this.speed = Math.random() * 2 + 1;
         }
         update() { this.y -= this.speed; if (this.y < -50) this.reset(); }
         draw() { ctx.font = `${this.size}px serif`; ctx.fillText(this.char, this.x, this.y); }
     }
 
     for(let i=0; i<30; i++) particles.push(new Particle());
-    function startHeavyHearts() { for(let i=0; i<70; i++) particles.push(new Particle()); }
+    function startHeavyHearts() { for(let i=0; i<80; i++) particles.push(new Particle()); }
 
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
