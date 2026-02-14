@@ -6,62 +6,44 @@
     <title>Valentine's Challenge</title>
     <style>
         :root {
-            --bg: #2b0202;
+            --bg: #1a0101;
             --gold: #d4af37;
-            --neon: #00f2ff;
+            --white: #fff;
         }
 
         body {
             background-color: var(--bg);
-            color: white;
-            font-family: 'Georgia', serif;
+            color: var(--white);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0; padding: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex; justify-content: center; align-items: center;
-            overflow: hidden; text-align: center;
+            overflow-x: hidden; text-align: center;
         }
 
-        #canvas {
-            position: fixed; top: 0; left: 0;
-            pointer-events: none; z-index: 1;
-        }
+        #canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 1; }
 
-        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 400px; }
+        .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 450px; padding: 20px; }
 
-        /* STAGE 1: THE CHOICE */
-        .btn-container { 
-            display: flex; justify-content: center; align-items: center; 
-            gap: 20px; margin-top: 30px; height: 100px; 
-        }
-        #yes-btn {
+        .gif-img, .final-img { width: 100%; max-width: 280px; border-radius: 20px; margin: 20px 0; border: 3px solid var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+
+        .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
+        
+        button {
             background: var(--gold); color: black; border: none;
-            padding: 15px 30px; border-radius: 50px; font-weight: bold;
-            cursor: pointer; transition: 0.2s; font-size: 1.1rem;
-        }
-        #no-btn {
-            background: #555; color: white; border: none;
-            padding: 10px 20px; border-radius: 50px;
-            cursor: pointer; transition: 0.2s;
-        }
-        #pew { 
-            position: absolute; top: -30px; width: 100%; 
-            color: var(--gold); font-weight: bold; display: none; 
+            padding: 12px 25px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; transition: 0.2s; font-size: 1rem;
         }
 
-        /* STAGE 2: THE KURDISH SLIDER */
-        #slider-stage { display: none; }
-        .kurdish-txt { font-size: 1.8rem; color: var(--gold); margin-bottom: 15px; }
-        #percentage { font-size: 4rem; font-weight: bold; margin: 20px 0; transition: 0.3s; }
-        .neon { color: var(--neon); text-shadow: 0 0 20px var(--neon); }
-        input[type=range] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+        #no-btn { background: #444; color: white; }
 
-        /* STAGE 3: THE GRAND FINALE */
-        #final-stage { display: none; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .big-heart { font-size: 6rem; margin-bottom: 10px; filter: drop-shadow(0 0 20px #ff2e2e); }
-        .bouquet { font-size: 5rem; margin-bottom: 20px; }
-        .arabic-poetry { font-size: 1.5rem; color: var(--gold); direction: rtl; line-height: 2; }
+        /* STAGES */
+        #stage-2, #stage-zor, #stage-final { display: none; }
 
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
+        .final-txt { font-size: 2rem; color: var(--gold); font-weight: bold; margin-top: 15px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        
+        #pew { position: absolute; top: -30px; width: 100%; color: var(--gold); font-weight: bold; display: none; }
     </style>
 </head>
 <body>
@@ -69,40 +51,43 @@
 <canvas id="canvas"></canvas>
 
 <div class="ui-wrapper">
-    <div id="q-stage">
-        <h1 style="font-size: 2.5rem;">Do you love me?</h1>
+    <div id="stage-1">
+        <h1 style="font-size: 2.2rem;">Do you love me?</h1>
         <div class="btn-container" style="position: relative;">
             <div id="pew">( pew )</div>
-            <button id="yes-btn" onclick="openSlider()">YES</button>
+            <button id="yes-btn" onclick="showStage2()">YES</button>
             <button id="no-btn" onclick="shrinkNo()">NO</button>
         </div>
     </div>
 
-    <div id="slider-stage">
+    <div id="stage-2">
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
-        <div id="percentage">0%</div>
-        <input type="range" id="love-slider" min="0" max="1000" value="0" oninput="handleSlide(this.value)">
-        <p style="opacity: 0.5; margin-top: 15px;">Keep pulling for a surprise...</p>
+        <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img" alt="Cute Cat">
+        <div class="btn-container">
+            <button onclick="showZor()">Zor</button>
+            <button onclick="showFinal()">ZORRRRRR</button>
+            <button onclick="showFinal()">HANAK</button>
+            <button onclick="showFinal()">GALAK ZORRRRRR</button>
+        </div>
     </div>
 
-    <div id="final-stage">
-        <div class="big-heart">❤️</div>
-        <div class="bouquet">💐🌹💐</div>
-        <div class="arabic-poetry">
-            أُحبُّكِ جِدّاً..<br>
-            وأعرفُ أنَّ الطريقَ إلى المستحيلِ طويـلْ<br>
-            وأعرفُ أنَّكِ ستُ النساء <br>
-            وليسَ لديَّ بديـلْ<br>
-            أُحبُّكِ جِدّاً..
-        </div>
-        <p style="margin-top: 15px; font-weight: bold; color: var(--gold); letter-spacing: 1px;">I Love You Forever</p>
+    <div id="stage-zor">
+        <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img" alt="Kisses">
+        <br>
+        <button onclick="showFinal()" style="margin-top: 20px;">I mean... GALAK ZOR!</button>
+    </div>
+
+    <div id="stage-final">
+        <img src="https://zayd9000.github.io/image.png" class="final-img" alt="Helmet Surprise">
+        <div class="final-txt">Atum zor xosh dawyyyyyyy</div>
+        <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
     </div>
 </div>
 
 <script>
     let noScale = 1;
     let yesScale = 1;
-    let bloomLevel = 0;
 
     function shrinkNo() {
         noScale -= 0.15;
@@ -117,40 +102,37 @@
         if (noScale <= 0.1) noBtn.style.display = 'none';
     }
 
-    function openSlider() {
-        document.getElementById('q-stage').style.display = 'none';
-        document.getElementById('slider-stage').style.display = 'block';
+    function showStage2() {
+        document.getElementById('stage-1').style.display = 'none';
+        document.getElementById('stage-2').style.display = 'block';
     }
 
-    function handleSlide(val) {
-        const pDisplay = document.getElementById('percentage');
-        pDisplay.innerText = val + "%";
-        bloomLevel = val;
-
-        if(val > 100) pDisplay.classList.add('neon');
-        else pDisplay.classList.remove('neon');
-
-        if(val >= 1000) {
-            setTimeout(() => {
-                document.getElementById('slider-stage').style.display = 'none';
-                document.getElementById('final-stage').style.display = 'block';
-            }, 500);
-        }
+    function showZor() {
+        document.getElementById('stage-2').style.display = 'none';
+        document.getElementById('stage-zor').style.display = 'block';
     }
 
-    // Animation Logic
+    function showFinal() {
+        document.getElementById('stage-2').style.display = 'none';
+        document.getElementById('stage-zor').style.display = 'none';
+        document.getElementById('stage-final').style.display = 'block';
+        startHeavyHearts();
+    }
+
+    // Background Animation Logic
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
+
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.onresize = resize; resize();
 
-    class Item {
+    class Particle {
         constructor() { this.reset(); }
         reset() {
             this.x = Math.random() * canvas.width;
             this.y = canvas.height + 50;
-            this.type = Math.random() > 0.5 ? '❤️' : '🌸';
+            this.char = Math.random() > 0.5 ? '❤️' : '🌸';
             this.size = Math.random() * 20 + 10;
             this.speed = Math.random() * 3 + 1;
         }
@@ -160,19 +142,22 @@
         }
         draw() {
             ctx.font = `${this.size}px serif`;
-            ctx.fillText(this.type, this.x, this.y);
+            ctx.fillText(this.char, this.x, this.y);
         }
     }
 
-    for(let i=0; i<100; i++) particles.push(new Item());
+    for(let i=0; i<30; i++) particles.push(new Particle());
+
+    function startHeavyHearts() {
+        for(let i=0; i<60; i++) particles.push(new Particle());
+    }
 
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let activeItems = Math.floor(bloomLevel / 8); 
-        for(let i=0; i < activeItems; i++) {
-            particles[i].update();
-            particles[i].draw();
-        }
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
         requestAnimationFrame(render);
     }
     render();
