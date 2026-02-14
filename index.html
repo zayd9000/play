@@ -44,14 +44,8 @@
 
         #no-btn { background: #444; color: white; position: relative; }
 
-        /* MUSIC BUTTON */
-        .music-btn {
-            background: none; border: 1px solid var(--gold); color: var(--gold);
-            padding: 8px 15px; font-size: 0.8rem; margin-bottom: 20px;
-        }
-
         /* STAGES */
-        #stage-2, #stage-zor, #stage-final { display: none; }
+        #stage-2, #stage-zor, #stage-handak, #stage-final { display: none; }
 
         .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
         .final-txt { font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top: 15px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
@@ -74,26 +68,33 @@
     </div>
 
     <div id="stage-2">
-        <button class="music-btn" onclick="window.open('https://vt.tiktok.com/ZSmMV7pS4/', '_blank')">🎵 Open Music Background</button>
+        <button onclick="window.open('https://vt.tiktok.com/ZSmMV7pS4/', '_blank')" style="background: none; border: 1px solid var(--gold); color: var(--gold); margin-bottom: 15px; font-size: 0.8rem;">🎵 Click to Start Music</button>
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
-        <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img" alt="Cute Cat">
+        <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img">
         <div class="btn-container">
             <button onclick="showZor()">Zor</button>
-            <button onclick="showFinal()">ZORRRRRR</button>
-            <button onclick="showFinal()">HANAK</button>
-            <button onclick="showFinal()">GALAK ZORRRRRR</button>
+            <button onclick="showZor()">ZORRRRRR</button>
+            <button onclick="showHandak()">HANAK</button>
+            <button onclick="showZor()">GALAK ZORRRRRR</button>
         </div>
     </div>
 
     <div id="stage-zor">
         <div class="kurdish-txt">Zor? Bas Zor? 😘</div>
-        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img" alt="Kisses">
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUyZm01cmxpbHJiNjJtMHh5YnlzZ3JoMW14Mnp6cjJ3MmhsbXVwYWd1byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ytu2GUYbvhz7zShGwS/giphy.gif" class="gif-img">
         <br>
         <button onclick="showFinal()" style="margin-top: 20px;">I mean... GALAK ZOR!</button>
     </div>
 
+    <div id="stage-handak">
+        <div class="kurdish-txt">Handak?! 🤨</div>
+        <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyZnp4ejhib2JlaWV5MDN0b2IybzV0cm5uNHYxbnU0MDU3cjdpZ2p6diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/fFa05KbZowXiEIyRse/giphy.gif" class="gif-img">
+        <br>
+        <button onclick="showFinal()" style="margin-top: 20px;">Chawa handak?! GALAK ZOR!</button>
+    </div>
+
     <div id="stage-final">
-        <img src="image.png" class="final-img" alt="Helmet Surprise" onerror="this.style.display='none'">
+        <img src="image.png" class="final-img" onerror="this.style.display='none'">
         <div class="final-txt">Atum zor xosh dawyyyyyyy</div>
         <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
     </div>
@@ -126,9 +127,15 @@
         document.getElementById('stage-zor').style.display = 'block';
     }
 
+    function showHandak() {
+        document.getElementById('stage-2').style.display = 'none';
+        document.getElementById('stage-handak').style.display = 'block';
+    }
+
     function showFinal() {
         document.getElementById('stage-2').style.display = 'none';
         document.getElementById('stage-zor').style.display = 'none';
+        document.getElementById('stage-handak').style.display = 'none';
         document.getElementById('stage-final').style.display = 'block';
         startHeavyHearts();
     }
