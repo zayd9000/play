@@ -2,302 +2,198 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>zayd90000 - Aviator Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Safa | Valentine 2026</title>
     <style>
         :root {
-            --bg-black: #000000;
-            --panel-bg: #1b1c1d;
-            --aviator-red: #d91c1c;
-            --bet-green: #28a745;
-            --cashout-orange: #f6a61b;
-            --text-gray: #9ea0a3;
-            --gold-fun: #c89134;
-            --history-purple: #913ef8;
+            --deep-red: #380202;
+            --neon-blue: #00f2ff;
+            --gold: #d4af37;
+            --paper: #fdfaf5;
+            --bright-red: #ff002b;
         }
 
         body {
-            background-color: var(--bg-black);
-            color: white;
-            font-family: 'Roboto', Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            background-color: var(--deep-red);
+            margin: 0; padding: 0;
+            font-family: 'Georgia', serif;
+            color: var(--paper);
+            overflow-x: hidden;
         }
 
-        /* Header */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 12px;
-            background: #141516;
+        #heartCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 0;
         }
-        .logo { font-weight: 900; font-style: italic; font-size: 1.1rem; }
-        .logo span { color: var(--bet-green); }
-        .balance-box { display: flex; align-items: center; gap: 8px; }
-        .balance { color: #62ca5d; font-weight: bold; background: #000; padding: 4px 12px; border-radius: 20px; border: 1px solid #333; }
 
-        /* Multiplier History */
-        .history-bar {
-            display: flex;
-            gap: 6px;
-            padding: 6px 12px;
-            background: #000;
-            overflow-x: auto;
-            white-space: nowrap;
-            border-bottom: 1px solid #222;
-        }
-        .hist-item { background: #1b1c1d; border-radius: 10px; padding: 2px 8px; font-size: 0.7rem; font-weight: bold; color: var(--history-purple); }
-
-        /* The Flight Arena */
-        .game-stage {
-            flex: 1;
+        .content {
             position: relative;
-            background: #000;
-            margin: 5px 10px;
-            border-radius: 12px;
-            border: 1px solid #222;
-            overflow: hidden;
+            z-index: 1;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
         }
-        .fun-mode-tag { background: var(--gold-fun); color: black; text-align: center; font-size: 0.65rem; font-weight: 900; padding: 2px 0; text-transform: uppercase; }
-        #multiplier-display { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 4.5rem; font-weight: 900; z-index: 10; }
-        
-        .flight-svg { position: absolute; width: 100%; height: 100%; pointer-events: none; }
-        #path-line { fill: none; stroke: var(--aviator-red); stroke-width: 4; stroke-dasharray: 1000; stroke-dashoffset: 1000; stroke-linecap: round; }
-        #plane-img { position: absolute; width: 50px; bottom: 0; left: 0; z-index: 15; filter: drop-shadow(0 0 10px red); }
 
-        /* Double Betting Panels */
-        .betting-area {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-            background: #141516;
-        }
-        .bet-card { background: var(--panel-bg); border-radius: 15px; padding: 12px; border: 1px solid #333; }
-        .panel-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 8px; font-size: 0.7rem; color: var(--text-gray); font-weight: bold; }
-        .panel-tabs .active { color: white; border-bottom: 2px solid var(--bet-green); }
-
-        .bet-row { display: flex; gap: 10px; align-items: center; }
-        .input-block { flex: 1; }
-        .stepper { display: flex; justify-content: space-between; align-items: center; background: #000; border-radius: 20px; padding: 2px 10px; border: 1px solid #444; margin-bottom: 5px; }
-        .stepper input { background: transparent; border: none; color: white; width: 50px; text-align: center; font-weight: bold; font-size: 1rem; }
-        .stepper button { background: none; border: none; color: #777; font-size: 1.2rem; cursor: pointer; }
-
-        .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-        .quick-grid button { background: #2c2d2e; border: none; color: var(--text-gray); font-size: 0.6rem; padding: 5px; border-radius: 10px; font-weight: bold; }
-
-        .action-btn {
-            flex: 1.2;
-            height: 75px;
-            border-radius: 15px;
-            border: none;
-            color: white;
-            font-weight: 900;
-            font-size: 1.3rem;
-            background: var(--bet-green);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .polaroid {
+            background: white;
+            padding: 15px 15px 60px 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            margin: 50px 0;
+            transform: rotate(var(--r));
+            transition: 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
-        .action-btn span { font-size: 0.8rem; opacity: 0.8; margin-top: 2px; }
-        .action-btn.cashout { background: var(--cashout-orange); color: black; }
-        .action-btn.waiting { background: #444; color: #888; cursor: not-allowed; }
 
-        /* Bottom Stats */
-        .live-stats { flex: 0.8; background: #0c0d0e; padding: 10px; overflow-y: auto; border-top: 1px solid #333; }
-        .stat-header { display: flex; justify-content: space-between; color: #555; font-size: 0.65rem; font-weight: bold; margin-bottom: 8px; }
-        .bot-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #1a1a1a; font-size: 0.8rem; }
-        .avatar { width: 20px; height: 20px; border-radius: 50%; background: #333; display: inline-block; margin-right: 5px; vertical-align: middle; }
-        .win-amt { color: var(--bet-green); font-weight: bold; }
+        .polaroid img { 
+            width: 100%; height: auto; 
+            filter: blur(8px); 
+            transition: 0.8s;
+            display: block;
+        }
+
+        .polaroid:hover img { filter: blur(0); }
+
+        .caption {
+            color: #222;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.6rem;
+            margin-top: 25px;
+        }
+
+        .poetry-box {
+            margin: 60px 0;
+            padding: 30px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+        }
+
+        .arabic-poem {
+            font-size: 1.8rem;
+            color: var(--gold);
+            line-height: 1.8;
+            direction: rtl;
+        }
+
+        .neon-container {
+            border: 2px solid var(--neon-blue);
+            padding: 30px 20px;
+            margin: 50px 0;
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+            border-radius: 12px;
+        }
+
+        .gift-box {
+            width: 90px; height: 90px;
+            background: var(--bright-red);
+            margin: 25px auto;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .gift-box::before { content: ''; position: absolute; width: 18px; height: 100%; background: var(--gold); left: 36px; }
+        .gift-box::after { content: ''; position: absolute; height: 18px; width: 100%; background: var(--gold); top: 36px; left: 0; }
+
+        #surprise { display: none; font-size: 2rem; color: var(--gold); font-weight: bold; margin-top: 20px; animation: popIn 0.8s forwards; }
+
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+        .lang-nav { margin-top: 80px; display: flex; justify-content: center; gap: 25px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.3); }
+        .lang-btn { cursor: pointer; color: var(--gold); font-size: 0.85rem; opacity: 0.6; }
     </style>
 </head>
 <body>
 
-<div class="top-nav">
-    <div class="logo">zayd<span>90000</span></div>
-    <div class="balance-box">
-        <div class="balance" id="main-wallet">100.00 USD</div>
-        <div style="font-size:1.2rem;">☰</div>
-    </div>
-</div>
+<canvas id="heartCanvas"></canvas>
 
-<div class="history-bar" id="history-list">
-    <div class="hist-item">1.55x</div>
-    <div class="hist-item" style="color:#c017b3">12.20x</div>
-    <div class="hist-item">2.10x</div>
-    <div class="hist-item" style="color:#c017b3">8.44x</div>
-    <div class="hist-item">1.02x</div>
-</div>
+<div class="content">
+    <header>
+        <h1 id="main-title">To Safa</h1>
+        <p style="opacity: 0.7; letter-spacing: 2px;">VALENTINE 2026</p>
+    </header>
 
-<div class="game-stage">
-    <div class="fun-mode-tag">Fun Mode</div>
-    <div id="multiplier-display">1.00x</div>
-    <svg class="flight-svg" viewBox="0 0 500 300"><path id="path-line" d="M 10 290 Q 150 290 480 20" /></svg>
-    <img src="https://img.icons8.com/color/96/airplane.png" id="plane-img" alt="plane">
-</div>
-
-<div class="betting-area">
-    <div class="bet-card">
-        <div class="panel-tabs"><span class="active">Bet</span><span>Auto</span></div>
-        <div class="bet-row">
-            <div class="input-block">
-                <div class="stepper">
-                    <button onclick="adj(1,-1)">−</button>
-                    <input type="number" id="amt1" value="1.00">
-                    <button onclick="adj(1,1)">+</button>
-                </div>
-                <div class="quick-grid">
-                    <button onclick="set(1,10)">10</button>
-                    <button onclick="set(1,20)">20</button>
-                    <button onclick="set(1,50)">50</button>
-                    <button onclick="set(1,100)">100</button>
-                </div>
-            </div>
-            <button class="action-btn" id="btn1" onclick="handle(1)">BET <span id="label1">1.00 USD</span></button>
-        </div>
+    <div class="polaroid" style="--r: -3deg;">
+        <img src="https://i.postimg.cc/9zQVrSXf/image.png" alt="Memory 1">
+        <div class="caption">"And I only have eyes for you"</div>
     </div>
 
-    <div class="bet-card">
-        <div class="panel-tabs"><span class="active">Bet</span><span>Auto</span></div>
-        <div class="bet-row">
-            <div class="input-block">
-                <div class="stepper">
-                    <button onclick="adj(2,-1)">−</button>
-                    <input type="number" id="amt2" value="1.00">
-                    <button onclick="adj(2,1)">+</button>
-                </div>
-                <div class="quick-grid">
-                    <button onclick="set(2,10)">10</button>
-                    <button onclick="set(2,20)">20</button>
-                    <button onclick="set(2,50)">50</button>
-                    <button onclick="set(2,100)">100</button>
-                </div>
-            </div>
-            <button class="action-btn" id="btn2" onclick="handle(2)">BET <span id="label2">1.00 USD</span></button>
-        </div>
+    <div class="poetry-box">
+        <p class="arabic-poem">أُحبُّكِ جِدّاً.. وأعرفُ أني أُسافرُ في بحرِ عينيكِ.. دُونَ يقينِ</p>
+        <p id="poem-translation" style="font-style: italic; font-size: 0.95rem; opacity: 0.8;">"I love you dearly... traveling the sea of your eyes."</p>
     </div>
-</div>
 
-<div class="live-stats">
-    <div class="stat-header"><span>ALL BETS</span><span>WIN USD</span></div>
-    <div id="bot-list"></div>
+    <div class="polaroid" style="--r: 2deg;">
+        <img src="https://i.postimg.cc/9MHhGzXs/IMG-8035.jpg" alt="Memory 2">
+        <div class="caption">"Beautiful in every way"</div>
+    </div>
+
+    <div class="polaroid" style="--r: -3deg;">
+        <img src="https://i.postimg.cc/44z3Fkrp/IMG-8034.jpg" alt="Memory 3">
+        <div class="caption">"Show me love..."</div>
+    </div>
+
+    <div class="neon-container">
+        <div style="color: var(--neon-blue); font-weight: bold; letter-spacing: 4px;">LIMITED EDITION</div>
+        <p id="neon-msg" style="font-style: italic; margin-top: 20px;">"You gave me all the love I missed."</p>
+    </div>
+
+    <div class="polaroid" style="--r: 3deg;">
+        <img src="https://i.postimg.cc/rwzMTvYC/IMG-8031.jpg" alt="Memory 4">
+        <div class="caption">"We up in the clouds..."</div>
+    </div>
+
+    <div class="gift-section">
+        <p id="gift-hint">Click to unwrap your gift, Safa</p>
+        <div class="gift-box" id="box-element" onclick="openGift()"></div>
+        <div id="surprise">❤️ أحبكِ للأبد ❤️</div>
+    </div>
+
+    <nav class="lang-nav">
+        <span class="lang-btn" onclick="translateTo('en')">ENGLISH</span>
+        <span class="lang-btn" onclick="translateTo('ku')">KURDISH</span>
+        <span class="lang-btn" onclick="translateTo('ar')">ARABIC</span>
+    </nav>
 </div>
 
 <script>
-    let bal = parseFloat(localStorage.getItem('z9_master_bal')) || 100.00;
-    let mult = 1.00;
-    let state = "WAITING";
-    let bets = { 1: false, 2: false };
-    let rounds = 0;
+    const strings = {
+        en: { title: "To Safa", poem: "I love you dearly... traveling the sea of your eyes.", neon: "You gave me all the love I missed.", hint: "Click to unwrap your gift, Safa", final: "❤️ I Love You Forever ❤️" },
+        ku: { title: "بۆ سەفا", poem: "زۆرم خۆشدەوێیت... لە دەریای چاوەکانتدا نوقم بووم.", neon: "تۆ هەموو ئەو خۆشەویستیەی پێت بەخشیم کە نەمبوو.", hint: "بۆ کردنەوەی دیارییەکە کلیک بکە", final: "❤️ تا هەتایە خۆشم دەوێیت ❤️" },
+        ar: { title: "إلى صفا", poem: "أُحبُّكِ جِدّاً.. وأعرفُ أني أُسافرُ في بحرِ عينيكِ.. دُونَ يقينِ", neon: "لقد أعطيتني كل الحب الذي افتقدته.", hint: "اضغطي لفتح هدية صفا", final: "❤️ أحبكِ للأبد ❤️" }
+    };
 
-    const botNames = ["d***2", "z***k", "Aryan", "m***1", "p***0", "x***x", "zayd_9"];
-
-    function sync() {
-        document.getElementById('main-wallet').innerText = bal.toFixed(2) + " USD";
-        localStorage.setItem('z9_master_bal', bal);
+    function translateTo(l) {
+        document.getElementById('main-title').innerText = strings[l].title;
+        document.getElementById('poem-translation').innerText = strings[l].poem;
+        document.getElementById('neon-msg').innerText = strings[l].neon;
+        document.getElementById('gift-hint').innerText = strings[l].hint;
+        document.getElementById('surprise').innerText = strings[l].final;
     }
 
-    function set(id, v) { document.getElementById('amt'+id).value = v.toFixed(2); refresh(id); }
-    function adj(id, v) { let e = document.getElementById('amt'+id); e.value = Math.max(0.1, parseFloat(e.value) + v).toFixed(2); refresh(id); }
-    function refresh(id) { if(!bets[id]) document.getElementById('label'+id).innerText = document.getElementById('amt'+id).value + " USD"; }
-
-    function engine() {
-        rounds++;
-        state = "WAITING";
-        document.getElementById('multiplier-display').innerText = "WAITING...";
-        document.getElementById('multiplier-display').style.color = "var(--gold-fun)";
-        document.getElementById('path-line').style.strokeDashoffset = "1000";
-        document.getElementById('plane-img').style.transform = "translate(10px, 290px)";
-
-        // Prep Bots
-        let activeBots = botNames.map(n => ({ name: n, bet: (Math.random()*15+1).toFixed(2), target: (Math.random()*4+1.1).toFixed(2), won: false }));
-        renderBots(activeBots);
-
-        setTimeout(() => {
-            state = "FLYING";
-            mult = 1.00;
-            
-            // THE CHEAT LOGIC
-            let crash;
-            if(rounds === 29) crash = 6.60;
-            else if(rounds === 30) { crash = 10.00; rounds = 0; }
-            else crash = (Math.random() < 0.12) ? 1.00 : (Math.random() * 5 + 1.1).toFixed(2);
-
-            document.getElementById('multiplier-display').style.color = "white";
-            [1, 2].forEach(id => {
-                if(bets[id]) {
-                    let btn = document.getElementById('btn'+id);
-                    btn.classList.add('cashout');
-                    btn.innerHTML = `CASH OUT <span id="label${id}">0.00 USD</span>`;
-                }
-            });
-
-            let flight = setInterval(() => {
-                if(mult >= crash) {
-                    clearInterval(flight);
-                    state = "CRASHED";
-                    document.getElementById('multiplier-display').innerText = "FLEW AWAY!";
-                    document.getElementById('multiplier-display').style.color = "red";
-                    resetAll();
-                    setTimeout(engine, 3000);
-                } else {
-                    mult += 0.01;
-                    document.getElementById('multiplier-display').innerText = mult.toFixed(2) + "x";
-                    let p = (mult - 1) / (crash - 1);
-                    if (crash == 1.00) p = 0;
-                    document.getElementById('path-line').style.strokeDashoffset = 1000 - (p * 1000);
-                    document.getElementById('plane-img').style.transform = `translate(${10 + (p * 450)}px, ${290 - (p * 250)}px)`;
-                    
-                    [1, 2].forEach(id => {
-                        if(bets[id]) document.getElementById('label'+id).innerText = (parseFloat(document.getElementById('amt'+id).value) * mult).toFixed(2) + " USD";
-                    });
-
-                    activeBots.forEach(b => { if(!b.won && mult >= b.target) { b.won = true; renderBots(activeBots); } });
-                }
-            }, 60);
-        }, 5000);
+    function openGift() {
+        document.getElementById('box-element').style.display = "none";
+        document.getElementById('gift-hint').style.display = "none";
+        document.getElementById('surprise').style.display = "block";
     }
 
-    function handle(id) {
-        let btn = document.getElementById('btn'+id);
-        let amt = parseFloat(document.getElementById('amt'+id).value);
-        if(state === "WAITING" && !bets[id] && bal >= amt) {
-            bal -= amt; bets[id] = true;
-            btn.innerText = "WAITING..."; btn.classList.add('waiting');
-        } else if(state === "FLYING" && bets[id]) {
-            bal += (amt * mult); bets[id] = false;
-            btn.classList.remove('cashout'); refresh(id);
-        }
-        sync();
+    const canvas = document.getElementById('heartCanvas');
+    const ctx = canvas.getContext('2d');
+    let hearts = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.onresize = resize; resize();
+    class Heart {
+        constructor() { this.reset(); }
+        reset() { this.x = Math.random() * canvas.width; this.y = canvas.height + 20; this.size = Math.random() * 10 + 5; this.speed = Math.random() * 2 + 1; }
+        draw() { ctx.fillStyle = "rgba(212, 175, 55, 0.4)"; ctx.font = `${this.size}px serif`; ctx.fillText('❤️', this.x, this.y); }
+        update() { this.y -= this.speed; if (this.y < -20) this.reset(); }
     }
-
-    function renderBots(list) {
-        document.getElementById('bot-list').innerHTML = list.map(b => `
-            <div class="bot-row">
-                <span><div class="avatar"></div>${b.name}</span>
-                <span>${b.bet}</span>
-                <span class="${b.won?'win-amt':''}">${b.won ? (b.bet * b.target).toFixed(2) : '-'}</span>
-            </div>
-        `).join('');
-    }
-
-    function resetAll() {
-        [1, 2].forEach(id => {
-            bets[id] = false;
-            let btn = document.getElementById('btn'+id);
-            btn.classList.remove('cashout', 'waiting');
-            btn.innerHTML = `BET <span id="label${id}">${document.getElementById('amt'+id).value} USD</span>`;
-        });
-        sync();
-    }
-
-    sync(); engine();
+    for(let i=0; i<30; i++) hearts.push(new Heart());
+    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); hearts.forEach(h => { h.update(); h.draw(); }); requestAnimationFrame(animate); }
+    animate();
 </script>
 </body>
 </html>
