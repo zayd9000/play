@@ -25,7 +25,14 @@
 
         .ui-wrapper { position: relative; z-index: 10; width: 90%; max-width: 450px; padding: 20px; }
 
-        .gif-img, .final-img { width: 100%; max-width: 280px; border-radius: 20px; margin: 20px 0; border: 3px solid var(--gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+        .gif-img, .final-img { 
+            width: 100%; 
+            max-width: 280px; 
+            border-radius: 20px; 
+            margin: 20px 0; 
+            border: 3px solid var(--gold); 
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); 
+        }
 
         .btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 20px; }
         
@@ -35,13 +42,19 @@
             cursor: pointer; transition: 0.2s; font-size: 1rem;
         }
 
-        #no-btn { background: #444; color: white; }
+        #no-btn { background: #444; color: white; position: relative; }
+
+        /* MUSIC BUTTON */
+        .music-btn {
+            background: none; border: 1px solid var(--gold); color: var(--gold);
+            padding: 8px 15px; font-size: 0.8rem; margin-bottom: 20px;
+        }
 
         /* STAGES */
         #stage-2, #stage-zor, #stage-final { display: none; }
 
         .kurdish-txt { font-size: 1.8rem; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
-        .final-txt { font-size: 2rem; color: var(--gold); font-weight: bold; margin-top: 15px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
+        .final-txt { font-size: 2.2rem; color: var(--gold); font-weight: bold; margin-top: 15px; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
         
         #pew { position: absolute; top: -30px; width: 100%; color: var(--gold); font-weight: bold; display: none; }
     </style>
@@ -52,7 +65,7 @@
 
 <div class="ui-wrapper">
     <div id="stage-1">
-        <h1 style="font-size: 2.2rem;">Do you love me?</h1>
+        <h1 style="font-size: 2.2rem;">AMNT XOSH DAWY 🥹</h1>
         <div class="btn-container" style="position: relative;">
             <div id="pew">( pew )</div>
             <button id="yes-btn" onclick="showStage2()">YES</button>
@@ -61,6 +74,7 @@
     </div>
 
     <div id="stage-2">
+        <button class="music-btn" onclick="window.open('https://vt.tiktok.com/ZSmMV7pS4/', '_blank')">🎵 Open Music Background</button>
         <div class="kurdish-txt">Chand amnt xosh dawy?</div>
         <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyZDIyY2psNnkxc20wOHc0aWw4eXJpa3JkdmtqZWE5NHoydjQ4dmM4aCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/901mxGLGQN2PyCQpoc/giphy.gif" class="gif-img" alt="Cute Cat">
         <div class="btn-container">
@@ -79,7 +93,7 @@
     </div>
 
     <div id="stage-final">
-        <img src="https://zayd9000.github.io/image.png" class="final-img" alt="Helmet Surprise">
+        <img src="image.png" class="final-img" alt="Helmet Surprise" onerror="this.style.display='none'">
         <div class="final-txt">Atum zor xosh dawyyyyyyy</div>
         <div style="font-size: 3rem; margin-top: 10px;">❤️💐❤️</div>
     </div>
@@ -119,11 +133,9 @@
         startHeavyHearts();
     }
 
-    // Background Animation Logic
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.onresize = resize; resize();
 
@@ -136,28 +148,16 @@
             this.size = Math.random() * 20 + 10;
             this.speed = Math.random() * 3 + 1;
         }
-        update() {
-            this.y -= this.speed;
-            if (this.y < -50) this.reset();
-        }
-        draw() {
-            ctx.font = `${this.size}px serif`;
-            ctx.fillText(this.char, this.x, this.y);
-        }
+        update() { this.y -= this.speed; if (this.y < -50) this.reset(); }
+        draw() { ctx.font = `${this.size}px serif`; ctx.fillText(this.char, this.x, this.y); }
     }
 
     for(let i=0; i<30; i++) particles.push(new Particle());
-
-    function startHeavyHearts() {
-        for(let i=0; i<60; i++) particles.push(new Particle());
-    }
+    function startHeavyHearts() { for(let i=0; i<60; i++) particles.push(new Particle()); }
 
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        particles.forEach(p => { p.update(); p.draw(); });
         requestAnimationFrame(render);
     }
     render();
